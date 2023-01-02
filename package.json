@@ -7,6 +7,8 @@
     "name": "Ido Pluto",
     "url": "https://github.com/ido-pluto"
   },
+  "homepage": "https://astro-metro.github.io/docs/",
+  "keywords": ["Astro", "Astro-Metro", "Framework", "Docs"],
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
