@@ -37,9 +37,9 @@ export const COMMUNITY_INVITE_URL = `https://github.com/astro-metro/docs/discuss
 
 // See "Algolia" section of the README for more information.
 export const ALGOLIA = {
-	indexName: 'XXXXXXXXXX',
-	appId: 'XXXXXXXXXX',
-	apiKey: 'XXXXXXXXXX',
+	indexName: 'astro-metroio',
+	appId: '93MWEFAEM9',
+	apiKey: '7cf6e3455cd45792d6515b4890624339',
 };
 
 export type Sidebar = Record<
