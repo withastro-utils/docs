@@ -32,9 +32,9 @@ function consoleIt(){
 `components/LayoutTitle.astro`
 ```astro
 ---
-import getContextProps from '@astro-metro';
+import getContext from '@astro-metro';
 
-const {title, consoleIt} = getContextProps(Astro);
+const {title, consoleIt} = getContext(Astro);
 consoleIt();
 ---
 <h2>{title}</h2>
@@ -56,14 +56,14 @@ import LayoutTitle from '../components/LayoutTitle.astro';
 
 ```ts
 // if you are module/lib, change the name accordingly
-function getContextProps(astro: AstroGlobal, name = "default"): {[key: string]: any}
+function getContext(astro: AstroGlobal, name = "default"): {[key: string]: any}
 ```
 
 Every new context inherit the last one
 
 
 ```ts
-async function readerInContext<T>(promise: () => Promise<T>, astro: AstroGlobal, name = "default"): Promise<T>
+async function asyncContext<T>(promise: () => Promise<T>, astro: AstroGlobal, { name = "default", context = astro.props}): Promise<T>
 ```
 
 Same as `Context.astro`, help you render astro inside the props context
@@ -71,5 +71,5 @@ Same as `Context.astro`, help you render astro inside the props context
 ### Example
 
 ```ts
-const htmlSolt = await readerInContext(() => Astro.slots.render('default'), Astro, "@astro-metro/forms");
+const htmlSlot = await asyncContext(() => Astro.slots.render('default'), Astro, {name: "default"});
 ```

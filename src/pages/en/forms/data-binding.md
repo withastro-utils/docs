@@ -12,10 +12,9 @@ Behinds the seen, the form is <ins>validate</ins> and <ins>parsed</ins> accordin
 
 ```astro
 ---
-import { activateWebForms, Bind } from "@astro-metro/forms";
+import { Bind } from "@astro-metro/forms";
 import { BindForm, Button, Input } from "@astro-metro/forms/forms.js";
 import Layout from "../layouts/Layout.astro";
-await activateWebForms(Astro); // must do to save the CSRF validation secrets
 
 const form = Bind();
 let showSubmitText: string;

@@ -16,7 +16,7 @@ Some of the feature:
 - ✅ Data binding
 - ✅ File upload (support for multipart forms)
 - ✅ Web controls
-- ✅ Express session
+- ✅ JWT session
 - ✅ Context props
 
 ## Getting Started

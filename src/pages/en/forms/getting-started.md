@@ -11,17 +11,33 @@ First install the package
 npm i @metro-astro/forms
 ```
 
-## Adding integration
+## Adding integration & middleware
 
 Edit your `astro.config.ts` to add the integration
 ```ts
 import { defineConfig } from 'astro/config';
-import forms from '@metro-astro/forms';
+import amDebug from "@astro-metro/forms/dist/integration.js";
 
 export default defineConfig({
-    integrations: [forms]
+  output: 'server',
+  integrations: [amDebug],
+  experimental: {
+    middleware: true
+  }
 });
 ```
+This integration will easy you debugging by avoiding the browser popups every vite reload.
+
+
+Edit 
+`src/middleware.ts` to add the middleware
+```ts
+import amMiddleware from "@astro-metro/forms";
+import {sequence} from "astro/middleware";
+
+export const onRequest = sequence(amMiddleware());
+```
+
 
 ## Editing Main Layout
 
