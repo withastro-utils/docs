@@ -6,6 +6,8 @@ layout: ../../layouts/MainLayout.astro
 
 **Welcome to Astro Metro!**
 
+<img src="https://raw.githubusercontent.com/astro-metro/metro-forms/main/assets/banner.webp" style="border-radius: 10px"/>
+
 Astro-Metro is a group of utils packages that help you write you astro-web-app faster!
 
 
@@ -23,4 +25,4 @@ Some of the feature:
 
 To get started click on one of the section in the sidebar.
 
-If you don't know what to start with, try [Metro form](./forms/getting-started).
+If you don't know what to start with, try [Metro form](../forms/getting-started.md).
