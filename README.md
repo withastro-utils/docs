@@ -1,28 +1,53 @@
-# Astro-Metro: Docs Site
+# Starlight Starter Kit: Basics
 
-The source code of [Astro-Metro docs](https://astro-metro.github.io/docs) site.
+[![Built with Starlight](https://astro.badg.es/v2/built-with-starlight/tiny.svg)](https://starlight.astro.build)
 
-## Share an Idea
-💡 Got an idea to share?
+```
+npm create astro@latest -- --template starlight
+```
 
-💬 Join the discussions and let us know!
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/starlight/tree/main/examples/basics)
+[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/starlight/tree/main/examples/basics)
 
-🤝 We welcome all ideas, big or small, and value your contribution.
+> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
 
-🚀 Let's work together to make this project even better! 💪
+## 🚀 Project Structure
 
-## Contribution
-Have you come across a problem or issue with our project? Don't worry, we're here to help! Our Github repository has a dedicated section for issues, where you can report any bugs, errors, or other issues you may have encountered.
+Inside of your Astro + Starlight project, you'll see the following folders and files:
 
-To create an issue, simply click on the "Issues" tab and follow the prompts. Be sure to include a clear and concise title, as well as a detailed description of the issue and any relevant information, such as steps to reproduce or error messages.
+```
+.
+├── public/
+├── src/
+│   ├── assets/
+│   ├── content/
+│   │   ├── docs/
+│   │   └── config.ts
+│   └── env.d.ts
+├── astro.config.mjs
+├── package.json
+└── tsconfig.json
+```
 
-Once you've created an issue, our team will work to address the problem and provide a solution as soon as possible. So if you run into any issues with our project, don't hesitate to report them through the issues section. Together, we can work to make our project even better!
+Starlight looks for `.md` or `.mdx` files in the `src/content/docs/` directory. Each file is exposed as a route based on its file name.
 
-## Add Translate
-Want to help translate our project into a different language? Great! We welcome contributions from translators of all skill levels.
+Images can be added to `src/assets/` and embedded in Markdown with a relative link.
 
-To add a translation to our project, you will need to create a pull request (PR). A PR is a request to merge your changes into the main branch of the project.
+Static assets, like favicons, can be placed in the `public/` directory.
 
-To create a PR, first fork the repository and create a new branch for your translation. Then, make your translation changes and commit them to the branch. Once you're ready to submit your translation for review, open a PR and provide a brief description of your changes.
+## 🧞 Commands
 
-Our team will review your PR and, if everything looks good, we will merge it into the main branch of the project. Thanks for your contribution! We appreciate your help in making our project more accessible to a wider audience.
+All commands are run from the root of the project, from a terminal:
+
+| Command                   | Action                                           |
+| :------------------------ | :----------------------------------------------- |
+| `npm install`             | Installs dependencies                            |
+| `npm run dev`             | Starts local dev server at `localhost:4321`      |
+| `npm run build`           | Build your production site to `./dist/`          |
+| `npm run preview`         | Preview your build locally, before deploying     |
+| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
+| `npm run astro -- --help` | Get help using the Astro CLI                     |
+
+## 👀 Want to learn more?
+
+Check out [Starlight’s docs](https://starlight.astro.build/), read [the Astro documentation](https://docs.astro.build), or jump into the [Astro Discord server](https://astro.build/chat).

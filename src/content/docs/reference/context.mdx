@@ -1,0 +1,97 @@
+---
+title: Context
+description: Astro-Utils Context
+---
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+Save context between components.
+
+Allow you to add extra props without the need to manually add them every time.
+
+## Installation
+Install the package by running
+
+<Tabs>
+<TabItem label="npm">
+
+```sh
+npm install @astro-utils/context
+```
+
+</TabItem>
+<TabItem label="pnpm">
+
+```sh
+pnpm add @astro-utils/context
+```
+
+</TabItem>
+<TabItem label="Yarn">
+
+```sh
+yarn add @astro-utils/context
+```
+
+</TabItem>
+</Tabs>
+
+## Usage
+
+`layouts/Layout.astro`
+```astro
+---
+import Context from '@astro-utils/context/Context.astro';
+
+function consoleIt(){
+    console.log('Hi');
+}
+---
+<Context title="Context is cool" consoleIt={consoleIt}>
+    <slot/>
+</Context>
+```
+
+`components/LayoutTitle.astro`
+```astro
+---
+import getContext from '@astro-utils/context';
+
+const {title, consoleIt} = getContext(Astro);
+consoleIt();
+---
+<h2>{title}</h2>
+```
+
+`pages/index.astro`
+
+```astro
+---
+import Layout from '../layouts/Layout.astro';
+import LayoutTitle from '../components/LayoutTitle.astro';
+---
+<Layout>
+    <LayoutTitle/>
+</Layout>
+```
+
+## Functions
+
+```ts
+// if you are module/lib, change the name accordingly
+function getContext(astro: AstroGlobal, name = "default"): {[key: string]: any}
+```
+
+Every new context inherit the last one
+
+
+```ts
+async function asyncContext<T>(promise: () => Promise<T>, astro: AstroGlobal, { name = "default", context = astro.props}): Promise<T>
+```
+
+Same as `Context.astro`, help you render astro inside the props context
+
+### Example
+
+```ts
+const htmlSlot = await asyncContext(() => Astro.slots.render('default'), Astro, {name: "default"});
+```

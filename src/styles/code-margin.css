@@ -1,0 +1,12 @@
+.sl-markdown-content :not(a, strong, em, del, span, input, code, li) + :not(a, strong, em, del, span, input, code, :where(.not-content *)) {
+    margin-top: 0!important;
+    margin-bottom: 1.5rem!important;
+}
+
+.frame.is-terminal {
+    margin-top: 1.5rem!important;
+}
+
+.frame .ec-line {
+    margin-bottom: 0!important;
+}

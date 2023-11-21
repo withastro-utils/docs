@@ -1,0 +1,105 @@
+---
+title: Forms - Getting started
+description: How to use astro forms
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+# Introduction
+
+Astro-Utils Forms is a set of tools to help you build forms in Astro.
+
+
+Some of the features:
+
+- ✅ Client & Server side form validation
+- ✅ Forms [CSRF](https://developer.mozilla.org/en-US/docs/Glossary/CSRF) protection
+- ✅ Data binding
+- ✅ File upload (support for multipart forms)
+- ✅ Web controls
+- ✅ JWT session
+
+## Installation
+
+First install the package
+
+<Tabs>
+<TabItem label="npm">
+
+```sh
+npm install @astro-utils/forms
+```
+
+</TabItem>
+<TabItem label="pnpm">
+
+```sh
+pnpm add @astro-utils/forms
+```
+
+</TabItem>
+<TabItem label="Yarn">
+
+```sh
+yarn add @astro-utils/forms
+```
+
+</TabItem>
+</Tabs>
+
+
+## Adding integration & middleware
+
+Edit your `astro.config.ts` to add the integration
+```ts
+import { defineConfig } from 'astro/config';
+import formsDebug from "@astro-utils/forms/dist/integration.js";
+
+export default defineConfig({
+  output: 'server',
+  integrations: [formsDebug]
+});
+```
+This integration will easy you debugging by avoiding the browser popups every vite reload.
+
+
+Edit
+`src/middleware.ts` to add the middleware
+```ts
+import astroFormsMiddleware from "@astro-utils/forms";
+import {sequence} from "astro/middleware";
+
+export const onRequest = sequence(astroFormsMiddleware());
+```
+
+
+## Editing Main Layout
+
+Add `WebForms` component to the main project layout
+
+```astro
+---
+import { WebForms } from "@astro-utils/forms/forms.js";
+
+export interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <WebForms>
+      <slot />
+    </WebForms>
+  </body>
+</html>
+```

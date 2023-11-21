@@ -1,38 +1,20 @@
 {
-  "name": "astro-metro-docs",
+  "name": "astro-utils-docs",
   "type": "module",
   "version": "0.0.1",
-  "license": "MIT",
-  "author": {
-    "name": "Ido Pluto",
-    "url": "https://github.com/ido-pluto"
-  },
-  "homepage": "https://astro-metro.github.io/docs/",
-  "keywords": ["Astro", "Astro-Metro", "Framework", "Docs"],
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "check": "astro check && tsc",
-    "build": "astro build",
+    "build": "astro check && astro build",
     "preview": "astro preview",
     "astro": "astro"
   },
   "dependencies": {
-    "@algolia/client-search": "^4.13.1",
-    "@astrojs/preact": "^1.2.0",
-    "@astrojs/react": "^1.2.2",
-    "@docsearch/css": "^3.1.0",
-    "@docsearch/react": "^3.1.0",
-    "@types/node": "^18.0.0",
-    "@types/react": "^17.0.45",
-    "@types/react-dom": "^18.0.0",
-    "astro": "^1.6.14",
-    "preact": "^10.7.3",
-    "react": "^18.1.0",
-    "react-dom": "^18.1.0"
-  },
-  "devDependencies": {
-    "html-escaper": "^3.0.3",
-    "prettier-plugin-astro": "^0.7.0"
+    "@astrojs/check": "^0.3.1",
+    "@astrojs/starlight": "^0.12.1",
+    "astro": "^3.2.3",
+    "astro-expressive-code": "^0.29.1",
+    "sharp": "^0.32.5",
+    "typescript": "^5.2.2"
   }
 }

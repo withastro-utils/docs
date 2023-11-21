@@ -1,0 +1,44 @@
+---
+title: Astro Utils 🚀 Easily build your Forms & APIs
+head:
+  - tag: title
+    content: Astro Utils 🚀 Easily build your Forms & APIs
+description: Your Astro packages to help you build faster
+template: splash
+hero:
+  tagline: Your Astro packages to help you build faster
+  image:
+    file: ../../assets/logo.png
+  actions:
+    - text: Get started
+      link: http://localhost:4321/guides/forms/
+      icon: right-arrow
+      variant: primary
+    - text: View on GitHub
+      link: https://github.com/withastro-utils/utils/tree/main
+      icon: external
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+## What is Astro Utils?
+
+<CardGrid stagger>
+	<Card title="Web Forms" icon="pencil">
+		Simple Web Forms Client & Server validation. Includes CSRF protection, JWT (JSON Web Tokens) based session and more.
+	</Card>
+	<Card title="Astro Hooks" icon="add-document">
+		Client-Server hooks for Astro (onClick, onSubmit, etc)
+        Allow you to easily create forms, without having to write any JavaScript.
+	</Card>
+	<Card title="Express Endpoint" icon="setting">
+		Express like endpoint for Astro, with built-in body parsing.
+        Support for multipart/form-data file uploads, express middleware and more.
+	</Card>
+	<Card title="Read the docs" icon="open-book">
+        Easy to use, and easy to extend, Astro Utils is a great way to get started with Astro.
+
+		Learn more in [Get started guild](http://localhost:4321/guides/forms/).
+
+	</Card>
+</CardGrid>
