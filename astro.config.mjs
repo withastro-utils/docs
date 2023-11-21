@@ -5,9 +5,9 @@ import expressiveCode from "astro-expressive-code";
 
 // https://astro.build/config
 export default defineConfig({
+  site: 'https://withastro-utils.github.io',
+  base: '/docs',
   integrations: [expressiveCode(), starlight({
-    site: 'https://withastro-utils.github.io',
-    base: '/docs',
     editLink: {
       baseUrl: 'https://github.com/withastro-utils/docs/tree/main/',
     },
