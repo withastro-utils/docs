@@ -11,8 +11,7 @@ Behinds the seen, the form is <ins>validate</ins> and <ins>parsed</ins> accordin
 
 ```astro
 ---
-import { Bind } from "@astro-utils/forms";
-import { BindForm, Button, Input } from "@astro-utils/forms/forms.js";
+import { Bind, BindForm, BButton, BInput } from "@astro-utils/forms/forms.js";
 import Layout from "../layouts/Layout.astro";
 
 const form = Bind();
@@ -27,12 +26,12 @@ function formSubmit(){
         {showSubmitText}
 
         <h4>What you name*</h4>
-        <Input type={'text'} name="name" maxlength={20} required/>
+        <BInput type={'text'} name="name" maxlength={20} required/>
 
         <h4>Enter age*</h4>
-        <Input type={'int'} name="age" required/>
+        <BInput type={'int'} name="age" required/>
 
-        <Button onClick={formSubmit} whenFormOK>Submit</Button>
+        <BButton onClick={formSubmit} whenFormOK>Submit</BButton>
     </BindForm>
 </Layout>
 ```
@@ -64,9 +63,9 @@ function userNameOK(value: string){
         <FormErrors title="Errors"/>
 
         <h4>What you name*</h4>
-        <Input type={'text'} name="name" validate={userNameOK} maxlength={20} required/>
+        <BInput type={'text'} name="name" validate={userNameOK} maxlength={20} required/>
 
-        <Button onClick={formSubmit} whenFormOK>Submit</Button>
+        <BButton onClick={formSubmit} whenFormOK>Submit</BButton>
     </BindForm>
 </Layout>
 ```
@@ -95,12 +94,12 @@ function formSubmit(){
         {showSubmitText}
 
         <h4>What you name</h4>
-        <Input type={'text'} name="name"/>
+        <BInput type={'text'} name="name"/>
 
         <h4>Enter age*</h4>
-        <Input type={'int'} name="age" min={10} required/>
+        <BInput type={'int'} name="age" min={10} required/>
 
-        <Button onClick={formSubmit} whenFormOK>Submit</Button>
+        <BButton onClick={formSubmit} whenFormOK>Submit</BButton>
     </BindForm>
 </Layout>
 ```

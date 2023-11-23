@@ -4,7 +4,7 @@ description: HTML like form for Astro
 ---
 
 ## Form Input
-### Input
+### BInput
 
 The basic component for most of the form filed.
 
@@ -20,12 +20,16 @@ It includes the following attributes:
 - **required** - a value must be send
 - **readonly** - make the value unchangeable
 - **value** - default value, mainly use for the `readonly` attribute
+- **as** - change the base element (default `input`, can be a React component)
+- **props** - props for the `as` element
 
 ```astro
-<Input type="date" name="meetingDate" min="2023-2-2" max"2023-4-2" required/>
+
+```astro
+<BInput type="date" name="meetingDate" min="2023-2-2" max"2023-4-2" required/>
 ```
 
-### Textarea
+### BTextarea
 
 Simple to input, but only for text
 
@@ -36,20 +40,24 @@ It includes the following attributes:
 - **pattern** - regex pattern for text
 - **required** - a value must be send
 - **readonly** - make the value unchangeable
+- **as** - change the base element (default `textarea`, can be a React component)
+- **props** - props for the `as` element
 
 ```astro
-<Textarea name="moreInfo" maxlength={400} required/>
+<BTextarea name="moreInfo" maxlength={400} required/>
 ```
 
-### Select
+### BSelect
 
 The select component is use to make the user choose value / values
 
 - **type** - `text` / `date` / `number` - for parsing purposes
 - **multiple** - to select more then one value
 - **required** - something must be selected (default `true`)
+- **as** - change the base element (default `select`, can be a React component)
+- **props** - props for the `as` element
 
-#### Option
+#### BOption
 
 The select option
 
@@ -57,16 +65,16 @@ The select option
 - **disabled** - you can not select this option
 
 ```astro
-<Select name="favoriteFood" required={false}>
-    <Option disabled selected>Idk</Option> <--! The default, but not selectable-->
-    <Option>Pizaa</Option>
-    <Option>Salad</Option>
-    <Option>Lasagna</Option>
-</Select>
+<BSelect name="favoriteFood" required={false}>
+    <BOption disabled selected>Idk</BOption> <--! The default, but not selectable-->
+    <BOption>Pizaa</BOption>
+    <BOption>Salad</BOption>
+    <BOption>Lasagna</BOption>
+</BSelect>
 ```
 
 ## Form controls
-`Button` is the general form control. You can also use it without `BindForm` component
+`BButton` is the general form control. You can also use it without `BindForm` component
 Attributes:
 - **onClick** - function to execute when the button clicked
 - **connectId** - (optional) name for the button action (auto-generate by default)
@@ -78,7 +86,7 @@ function sayHi(){
     console.log('Hi');
 }
 ---
-<Button onClick={sayHi}>Say Hi</Button>
+<BButton onClick={sayHi}>Say Hi</BButton>
 
 ```
 ### Note
@@ -95,7 +103,7 @@ Attributes:
 
 ```astro
 <FormErrors title="From Errors"/>
-<Input type='int' min="1" name='number' errorMessage="Number is smaller then 1"/>
+<BInput type='int' min="1" name='number' errorMessage="Number is smaller then 1"/>
 ```
 
 This will output the following:
