@@ -24,8 +24,6 @@ It includes the following attributes:
 - **props** - props for the `as` element
 
 ```astro
-
-```astro
 <BInput type="date" name="meetingDate" min="2023-2-2" max"2023-4-2" required/>
 ```
 
