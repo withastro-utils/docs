@@ -24,7 +24,7 @@ It includes the following attributes:
 - **props** - props for the `as` element
 
 ```astro
-<BInput type="date" name="meetingDate" min="2023-2-2" max"2023-4-2" required/>
+<BInput type="date" name="meetingDate" min="2023-2-2" max="2023-4-2" required/>
 ```
 
 ### BTextarea
@@ -72,7 +72,8 @@ The select option
 ```
 
 ## Form controls
-`BButton` is the general form control. You can also use it without `BindForm` component
+`BButton` is the general form control. You can also use it without `Bind` data.
+
 Attributes:
 - **onClick** - function to execute when the button clicked
 - **connectId** - (optional) name for the button action (auto-generate by default)
@@ -84,11 +85,10 @@ function sayHi(){
     console.log('Hi');
 }
 ---
-<BButton onClick={sayHi}>Say Hi</BButton>
-
+<BindForm>
+    <BButton onClick={sayHi}>Say Hi</BButton>
+<BindForm/>
 ```
-### Note
-If you want the the button click will effect on JSX that appears before the button, it must be inside a `BindForm`
 
 ## Form Error
 

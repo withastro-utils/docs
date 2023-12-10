@@ -13,7 +13,7 @@ Use can get the session with the activation of web forms
 
 ```astro
 ---
-import { BButton } from "@astro-utils/forms/forms.js";
+import { BindForm, BButton } from "@astro-utils/forms/forms.js";
 const { session } = Astro.locals;
 
 function increase() {
@@ -21,9 +21,10 @@ function increase() {
   session.counter++;
 }
 ---
-
-<BButton onClick={increase}>++</BButton>
-<p>Current counter: {amSession.counter}</p>
+<BindForm>
+    <p>Current counter: {session.counter}</p>
+    <BButton onClick={increase}>++</BButton>
+</BindForm>
 ```
 
 ### Configuration
