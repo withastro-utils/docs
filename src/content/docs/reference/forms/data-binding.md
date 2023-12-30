@@ -1,5 +1,5 @@
 ---
-title: Forms - Data binding
+title: Data binding
 description: Forms data binding
 ---
 
@@ -7,7 +7,7 @@ description: Forms data binding
 
 You use components simpler to HTML5 standard form components.
 
-Behinds the seen, the form is <ins>validate</ins> and <ins>parsed</ins> according to the HTML
+Behind the seen, the form is <ins>validate</ins> and <ins>parsed</ins> according to the HTML
 
 ```astro
 ---
