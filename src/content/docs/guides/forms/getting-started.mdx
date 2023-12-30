@@ -1,5 +1,5 @@
 ---
-title: Forms - Getting started
+title: Getting started
 description: How to use astro forms
 ---
 
@@ -8,15 +8,13 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
 # Introduction
 
 Astro-Utils Forms is a set of tools to help you build forms in Astro.
-
+It provides similar functionality to ASP.NET Web Forms, but with a modern approach.
 
 Some of the features:
 
 - ✅ Client & Server side form validation
 - ✅ Forms [CSRF](https://developer.mozilla.org/en-US/docs/Glossary/CSRF) protection
-- ✅ Data binding
-- ✅ File upload (support for multipart forms)
-- ✅ Web controls
+- ✅ Web Controls (Data Binding) + View State
 - ✅ JWT session
 
 ## Installation
@@ -28,6 +26,13 @@ First install the package
 
 ```sh
 npm install @astro-utils/forms
+```
+
+</TabItem>
+<TabItem label="bun">
+
+```sh
+bun i @astro-utils/forms
 ```
 
 </TabItem>
@@ -60,8 +65,8 @@ export default defineConfig({
   integrations: [formDebug]
 });
 ```
-This integration will easy you're debugging by avoiding the browser popups every vite reload.
 
+This integration will simplify your debugging process by eliminating the browser pop-ups during every Vite reload
 
 Edit
 `src/middleware.ts` to add the middleware

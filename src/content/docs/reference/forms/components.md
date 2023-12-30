@@ -1,5 +1,5 @@
 ---
-title: Forms - Components
+title: Components
 description: HTML like form for Astro
 ---
 
@@ -60,7 +60,7 @@ The select component is use to make the user choose value / values
 The select option
 
 - **value** - value to send to the server
-- **disabled** - you can not select this option
+- **disabled** - you cannot select this option
 
 ```astro
 <BSelect name="favoriteFood" required={false}>
@@ -78,6 +78,10 @@ Attributes:
 - **onClick** - function to execute when the button clicked
 - **connectId** - (optional) name for the button action (auto-generate by default)
 - **whenFormOK** - execute the function only if there isn't any error in the form
+- **as** - change the base element (default `button`, can be a React component)
+- **props** - props for the `as` element
+- **state**: any - store state per button (must be used with `BindForm`)
+- **extra**: any - store extra data per button (cannot be changed in the `onClick` function)
 
 ```astro
 ---
@@ -85,9 +89,9 @@ function sayHi(){
     console.log('Hi');
 }
 ---
-<BindForm>
+<Layout>
     <BButton onClick={sayHi}>Say Hi</BButton>
-<BindForm/>
+<Layout/>
 ```
 
 ## Form Error
