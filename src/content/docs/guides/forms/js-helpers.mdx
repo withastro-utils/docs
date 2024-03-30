@@ -71,3 +71,38 @@ function formSubmit(){
     </BindForm>
 </Layout>
 ```
+
+### Throw Response
+If you want to throw a response from the server.
+
+Meaning you in a nested function and you encore an error and you want to override an response and abort the current page execution.
+
+You can use the `ThrowOverrideResponse` class.
+
+```ts
+new ThrowOverrideResponse(response?: Response, message?: string)
+```
+
+#### Example
+```ts
+import { ThrowOverrideResponse } from '@astro-utils/forms/forms.js';
+
+throw new ThrowOverrideResponse(new Response('Unauthorized', { status: 401 }));
+```
+
+Edge case:
+- If no `Response` is provided, will be use the response stored in `locals.forms.overrideResponse`.
+- If no `Response` is stored in `locals.forms.overrideResponse`, will be return the message with error code 500.
+
+#### Edge case example
+```ts
+import { ThrowOverrideResponse } from '@astro-utils/forms/forms.js';
+
+Astro.locals.forms.redirect('/login');
+throw new ThrowOverrideResponse();
+```
+
+Or you can just pass an error message:
+```ts
+throw new ThrowOverrideResponse(null, 'Unauthorized');
+```
