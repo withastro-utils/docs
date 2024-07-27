@@ -1,5 +1,5 @@
 ---
-title: Components
+title: Basic Form Components
 description: HTML like form for Astro
 ---
 
