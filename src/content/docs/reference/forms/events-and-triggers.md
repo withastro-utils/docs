@@ -53,13 +53,40 @@ The order of selection is:
 1. The last BButton with the `whenFormOK` attribute.
 2. Last BButton in the form.
 
-You can also manually configure that by adding the `data-submit` attribute to the select.
+You can also manually configure that by adding the `onSubmitClick` attribute to the select.
 
 ```astro
-<BSelect name="select" required onchange="submitForm(this)" data-submit="consoleItButton">
+<BSelect name="select" required onchange="submitForm(this)" onSubmitClick="consoleItButton">
     <BOption value="1">Option 1</BOption>
     <BOption value="2">Option 2</BOption>
 </BSelect>
 
 <BButton id="consoleItButton" onClick={onSubmit} class="hidden">This button is hidden</BButton>
 ```
+
+
+### Search Input Example
+
+Here's another example using a search input that triggers form submission:
+
+```astro
+---
+import { Bind, BButton, BindForm, BInput } from '@astro-utils/forms/forms.js';
+
+const form = Bind();
+
+function onSearch(){
+    console.log('Searching for:', form.searchQuery);
+}
+---
+<BindForm bind={form}>
+    <BInput name="searchQuery" placeholder="Enter search term..." onSubmitClick="searchButton" />
+    <BButton id="searchButton" onClick={onSearch}>Search</BButton>
+
+    <BButton onClick={() => {}} whenFormOK>No Search</BButton>
+</BindForm>
+```
+
+This example shows how to:
+- Use a search input that submits on Enter key press
+- If we hav'nt used the 'onSubmitClick', it will default to the last button with 'whenFormOK' attribute
