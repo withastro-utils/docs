@@ -90,3 +90,13 @@ function onSearch(){
 This example shows how to:
 - Use a search input that submits on Enter key press
 - If we hav'nt used the 'onSubmitClick', it will default to the last button with 'whenFormOK' attribute
+
+
+### Reloading state without click on submit button
+
+When you only want to update the form state - reload the form without the need to click on a submit button.
+
+```astro
+<BInput type="checkbox" name="showContent" onchange="submitForm(this)" onSubmitClick="state"/>
+{form.showContent ? 'Content is shown' : 'Content is hidden'}
+```
