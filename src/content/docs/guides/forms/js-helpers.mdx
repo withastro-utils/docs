@@ -25,6 +25,12 @@ class FormsReact {
     };
     updateOneSearchParam(key: string, value?: string, status?: ValidRedirectStatus): void;
 
+    /**
+     * Reload the page with the current state (BindForm) without client redirect. If that a POST request, buttons will not be invoked again.
+     * @param immediate true by default - If true, will stop rendering all BindForm components and their children and immediately reload the page.
+     */
+    reloadState(immediate: boolean = true): void;
+
     // client side redirect
     redirectTimeoutSeconds(location: string, timeoutSec = 2): void;
 
