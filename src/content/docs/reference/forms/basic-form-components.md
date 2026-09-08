@@ -21,6 +21,7 @@ It includes the following attributes:
 - **readonly** - make the value unchangeable
 - **value** - default value, mainly use for the `readonly` attribute
 - **as** - change the base element (default `input`, can be a React component)
+- **parseTimeFormat** - for type `time` only, allowing you to parse and stringify time as milliseconds instead of a `Date`
 - **props** - props for the `as` element
 
 ```astro
