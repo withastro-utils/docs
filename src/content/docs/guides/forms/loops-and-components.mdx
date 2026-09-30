@@ -1,0 +1,90 @@
+---
+title: Loops & Reusable Components
+description: Keep each repeated form attached to the right item when a list changes.
+lastUpdated: 2026-09-12
+---
+
+Start with the [shared Forms layout and middleware](/docs/guides/forms/getting-started/). These two files make a small editable list stored in the browser's Forms session.
+
+## Render a list of forms
+
+```astro title="src/pages/users.astro"
+---
+import { BButton, Bind, BindForm } from '@astro-utils/forms/forms.js';
+import Layout from '../layouts/Layout.astro';
+import UserItem from '../components/UserItem.astro';
+
+type User = { 
+    id: string; 
+    name: string;
+};
+
+const users: User[] = Astro.locals.session.users ??= [{ id: 'first', name: 'Alex' }];
+
+const bind = Bind({});
+
+function addUser() {
+    users.push({ id: crypto.randomUUID(), name: 'New user' });
+}
+---
+<Layout>
+    <span slot="title">Edit users</span>
+    <BindForm {bind}>
+        <p>Users: {users.length}</p>
+        <BButton onClick={addUser}>Add user</BButton>
+        {users.map(user => <UserItem {user} />)}
+    </BindForm>
+</Layout>
+```
+
+## Give each item a stable key
+
+```astro title="src/components/UserItem.astro"
+---
+import { BButton, BInput, Bind, BindForm, FormErrors } from '@astro-utils/forms/forms.js';
+
+interface Props {
+     user: { id: string; name: string } 
+}
+const { user } = Astro.props;
+
+const bind = Bind({ name: user.name });
+let saved = false;
+
+function saveUser() {
+    user.name = bind.name;
+    saved = true;
+}
+
+function deleteUser() {
+    const users: Props['user'][] = Astro.locals.session.users;
+    const index = users.findIndex(item => item.id === user.id);
+
+    if (index !== -1) users.splice(index, 1);
+    Astro.locals.forms.reloadState(); // reloads the parent BindForm (until the top)
+}
+---
+<BindForm {bind} key={user.id}>
+
+    <FormErrors />
+    <label for={`name-${user.id}`}>Name</label>
+    <BInput id={`name-${user.id}`} name="name" required maxlength={40} />
+
+    <BButton onClick={saveUser} whenFormOK>Save</BButton>
+    <BButton onClick={deleteUser}>Delete</BButton>
+
+    {saved && <p role="status">Saved!</p>}
+</BindForm>
+```
+
+## Try adding and removing items
+
+Open `/users`, add two users, edit their names, and delete the first user. The remaining form must keep its own name and actions.
+
+`key={user.id}` ties each child form to the item instead of its current position. 
+
+Do not use the array index as the key when items can be inserted, removed, or reordered. Ordinary static components and loops do not need an explicit key.
+
+Saving a child renders that child again. Deleting changes the parent's list, so `reloadState()` requests a parent rerender and updates the count. If parent data comes from a database, reload it in the parent bind's `on.reloadState` callback before rendering.
+
+Keep the JWT (cookie session) small. For a larger list, use durable storage and fetch only the items shown on the page.

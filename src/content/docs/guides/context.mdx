@@ -1,97 +1,68 @@
 ---
-title: Context
-description: Astro-Utils Context
+title: Context quickstart
+description: Share a value between a layout and a nested component.
+lastUpdated: 2026-09-12
 ---
-import { Tabs, TabItem } from '@astrojs/starlight/components';
 
-Save context between components.
+import InstallTabs from '../../../components/InstallTabs.astro';
 
-Allow you to add extra props without the need to manually add them every time.
+Context passes values to nested Astro components without forwarding a prop through every intermediate component. It exists during a render; it is not a browser store or persistent session.
 
-## Installation
-Install the package by running
+## Install Context
 
-<Tabs>
-<TabItem label="npm">
+<InstallTabs packages="@astro-utils/context" />
 
-```sh
-npm install @astro-utils/context
-```
+## Provide a named value
 
-</TabItem>
-<TabItem label="pnpm">
-
-```sh
-pnpm add @astro-utils/context
-```
-
-</TabItem>
-<TabItem label="Yarn">
-
-```sh
-yarn add @astro-utils/context
-```
-
-</TabItem>
-</Tabs>
-
-## Usage
-
-`layouts/Layout.astro`
-```astro
+```astro title="src/pages/index.astro"
 ---
 import Context from '@astro-utils/context/Context.astro';
 
-function consoleIt(){
-    console.log('Hi');
-}
+const user = await fetchUser();
+
 ---
-<Context title="Context is cool" consoleIt={consoleIt}>
-    <slot/>
+<Context contextName="user" {user}>
+   <Layout title="Home Page">
+        <h1>This is home page</h1>
+
+        <Button>This is your themed button!</Button>
+   </Layout> 
 </Context>
 ```
 
-`components/LayoutTitle.astro`
-```astro
+## Every layout/component can use it
+
+```astro title="src/components/Button.astro"
+---
+import getContext from '@astro-utils/context';
+const { user } = getContext(Astro, 'user');
+
+---
+<button class={user?.themes?.button}>Click me</button>
+```
+
+```astro title="src/layout/Website.astro"
 ---
 import getContext from '@astro-utils/context';
 
-const {title, consoleIt} = getContext(Astro);
-consoleIt();
+const { title } = Astro.props;
+
+const { user } = getContext(Astro, 'user');
 ---
-<h2>{title}</h2>
+<html lang="en">
+    <head>
+        <title>{title}</title>
+    </head>
+    <body>
+        <p>{user ? "User logged in" : "User not logged in"}</p>
+
+        </slot>
+    </body>
+</html>
 ```
 
-`pages/index.astro`
+## Nested values
 
-```astro
----
-import Layout from '../layouts/Layout.astro';
-import LayoutTitle from '../components/LayoutTitle.astro';
----
-<Layout>
-    <LayoutTitle/>
-</Layout>
-```
+A nested provider with the same `contextName` inherits the outer values and overrides the props it supplies (extends and override). An absent context returns `{}`.
 
-## Functions
-
-```ts
-// if you are module/lib, change the name accordingly
-function getContext(astro: AstroGlobal, name = "default"): {[key: string]: any}
-```
-
-Every new context inherit the last one
-
-
-```ts
-async function asyncContext<T>(promise: () => Promise<T>, astro: AstroGlobal, { name = "default", context = astro.props}): Promise<T>
-```
-
-Same as `Context.astro`, help you render astro inside the props context
-
-### Example
-
-```ts
-const htmlSlot = await asyncContext(() => Astro.slots.render('default'), Astro, {name: "default"});
-```
+See [Context API](/docs/reference/context/) for manual async rendering and the prop reference.

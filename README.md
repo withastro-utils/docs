@@ -4,7 +4,7 @@
 
 # Astro Utils Docs
 
-<img src="./public/favicon.png" height="200" />
+<img src="./public/favicon.svg" height="200" />
 
 [![Built with Astro](https://astro.badg.es/v2/built-with-astro/tiny.svg)](https://astro.build)
 [![Built with Starlight](https://astro.badg.es/v2/built-with-starlight/tiny.svg)](https://starlight.astro.build)

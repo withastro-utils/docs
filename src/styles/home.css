@@ -1,18 +1,126 @@
+/* Sky: shared site, navigation, reading, and component tokens. */
 :root {
-    --sl-hue-accent: 255;
-    --sl-color-accent-low: hsl(var(--sl-hue-accent), 14%, 20%);
-    --sl-color-accent: hsl(var(--sl-hue-accent), 60%, 60%);
-    --sl-color-accent-high: hsl(var(--sl-hue-accent), 60%, 87%);
-    --overlay-blurple: hsla(var(--sl-hue-accent), 60%, 60%, .2);
+    --au-action: #0b6ead;
+    --au-accent: #82cfff;
+    --au-surface-raised: #111e30;
+    --au-surface-soft: #15273b;
+    --au-surface-hover: #1c354c;
+    --au-border: #293e53;
+    --au-border-strong: #70879e;
+    --au-code-bg: #101c2c;
+    --au-shadow-sm: 0 3px 12px #00000012;
+    --au-shadow-lg: 0 18px 48px #00000024;
+    --au-radius-control: 0.375rem;
+    --au-radius-button: 0.375rem;
+    --au-radius-panel: 0.625rem;
+    --au-radius-hero: 0.75rem;
+    --au-duration-fast: 140ms;
+    --au-duration-standard: 200ms;
+    --au-ease: cubic-bezier(0.22, 1, 0.36, 1);
+    --sl-font: 'Manrope Variable', Manrope, system-ui, sans-serif;
+    --sl-font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+    --sl-color-white: #f0f7fc;
+    --sl-color-gray-1: #d6e6f0;
+    --sl-color-gray-2: #b4c8d8;
+    --sl-color-gray-3: #99b1c4;
+    --sl-color-gray-4: #577086;
+    --sl-color-gray-5: #293e53;
+    --sl-color-gray-6: #15273b;
+    --sl-color-black: #0b1523;
+    --sl-color-bg: #0b1523;
+    --sl-color-bg-nav: #0b1523;
+    --sl-color-bg-sidebar: #0e1a2a;
+    --sl-color-accent: #82cfff;
+    --sl-color-accent-low: #153750;
+    --sl-color-accent-high: #c0e7ff;
+    --sl-color-text-accent: var(--au-accent);
+    --sl-color-hairline: var(--au-border);
+    --sl-color-hairline-light: var(--au-border);
+    --sl-content-width: 50rem;
+    --sl-sidebar-width: 17rem;
+    --sl-nav-height: 4.25rem;
 }
-
-:root[data-theme=light] {
-    --sl-hue-accent: 210;
-    --sl-color-accent-high: hsl(var(--sl-hue-accent), 90%, 20%);
-    --sl-color-accent: hsl(var(--sl-hue-accent), 100%, 50%);
-    --sl-color-accent-low: hsl(var(--sl-hue-accent), 98%, 80%);
+:root[data-theme='light'] {
+    --au-accent: #0b6ead;
+    --au-surface-raised: #ffffff;
+    --au-surface-soft: #edf5fa;
+    --au-surface-hover: #e3eff7;
+    --au-border: #d9e5ed;
+    --au-border-strong: #788da0;
+    --au-code-bg: #ffffff;
+    --au-shadow-sm: 0 3px 12px #26476408;
+    --au-shadow-lg: 0 18px 48px #26476412;
+    --sl-color-white: #152b3d;
+    --sl-color-gray-1: #243c4e;
+    --sl-color-gray-2: #496175;
+    --sl-color-gray-3: #526c80;
+    --sl-color-gray-4: #758c9f;
+    --sl-color-gray-5: #d9e5ed;
+    --sl-color-gray-6: #edf5fa;
+    --sl-color-gray-7: #f5f9fc;
+    --sl-color-black: #ffffff;
+    --sl-color-bg: #f8fbfd;
+    --sl-color-bg-nav: #ffffff;
+    --sl-color-bg-sidebar: #f1f7fb;
+    --sl-color-accent: #0b6ead;
+    --sl-color-accent-low: #e4f2fb;
+    --sl-color-accent-high: #075483;
 }
+html { scroll-padding-top: 6rem; }
+body { background: var(--sl-color-bg); }
+header.header { border-bottom: 1px solid var(--au-border); background: var(--sl-color-bg-nav); }
+.site-title { color: var(--sl-color-white); font-size: 1.2rem; font-weight: 750; gap: 0.6rem; }
+.site-title img { width: 2rem; height: 2rem; }
+:where(a, button, input, select, textarea, summary):focus-visible { outline: 3px solid var(--au-accent); outline-offset: 3px; }
+.sidebar-content { font-size: 0.86rem; }
+.sidebar-content a { border-inline-start: 2px solid transparent; border-radius: 0 4px 4px 0; padding-block: 0.4rem; }
+.sidebar-content a:hover { background: var(--au-surface-hover); }
+.sidebar-content a[aria-current='page'] { color: var(--au-accent); background: var(--sl-color-accent-low); border-inline-start-color: var(--au-accent); font-weight: 700; }
+.sidebar-content summary { padding-block: 0.45rem; }
+.right-sidebar a { line-height: 1.5; }
+.right-sidebar a[aria-current='true'] { color: var(--au-accent); font-weight: 700; }
+.sl-markdown-content { --sl-text-h2: 1.8rem; --sl-text-h3: 1.35rem; --sl-line-height-headings: 1.25; font-size: 1rem; line-height: 1.8; }
+.sl-markdown-content :is(h1,h2,h3,h4) { color: var(--sl-color-white); font-weight: 700; line-height: 1.25; text-wrap: balance; letter-spacing: -0.025em; }
+.sl-markdown-content h2 { margin-top: 2.5rem; border: 0; font-size: var(--sl-text-h2); }
+.sl-markdown-content h3 { font-size: var(--sl-text-h3); }
+.sl-markdown-content a:not([class]) { text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
+.sl-markdown-content :not(pre) > code { padding: 0.12em 0.3em; border-radius: 4px; background: var(--au-surface-soft); }
+.sl-markdown-content table { display: block; overflow-x: auto; max-width: 100%; font-size: 0.9rem; }
+.sl-markdown-content th { background: var(--au-surface-soft); }
+.sl-markdown-content :is(td,th) { padding: 0.8rem 1rem; border-color: var(--au-border); }
+.starlight-aside { border-radius: 0 var(--au-radius-control) var(--au-radius-control) 0; box-shadow: none; }
+.pagination-links a { border-radius: var(--au-radius-panel); border-color: var(--au-border); box-shadow: none; background: var(--au-surface-raised); }
+.pagination-links a:hover { border-color: var(--au-accent); }
+.card-grid .card, .card-grid .sl-link-card { border: 1px solid var(--au-border); border-radius: var(--au-radius-panel); background: var(--au-surface-raised); box-shadow: none; }
+.card-grid .sl-link-card:hover { border-color: var(--au-accent); background: var(--au-surface-soft); }
+.action.primary { background: var(--au-action); color: #fff; border-color: var(--au-action); }
+site-search button[data-open-modal] { border: 1px solid var(--au-border-strong); border-radius: var(--au-radius-control); background: var(--au-surface-raised); color: var(--sl-color-gray-2); box-shadow: none; min-height: 2.6rem; }
+site-search dialog { border: 1px solid var(--au-border-strong); border-radius: 0.75rem; box-shadow: var(--au-shadow-lg); background: var(--au-surface-raised); }
+site-search dialog::backdrop { background: #081b2b99; }
+site-search .dialog-frame { background: var(--au-surface-raised); }
+site-search { --pagefind-ui-primary: var(--au-accent); --pagefind-ui-text: var(--sl-color-gray-1); --pagefind-ui-background: var(--au-surface-raised); --pagefind-ui-border: var(--au-border-strong); --pagefind-ui-border-radius: 6px; --pagefind-ui-font: var(--sl-font); }
+.pagefind-ui__result { border-color: var(--au-border)!important; }
+.pagefind-ui__result-link { text-underline-offset: 3px; }
+.pagefind-ui__result mark { color: var(--sl-color-white); background: var(--sl-color-accent-low); }
+.pagefind-ui__search-input { font-weight: 500!important; }
+.not-found { padding-block: 1rem 3rem; }
+.not-found-code { color: var(--au-accent); font-family: var(--sl-font-mono); }
+.not-found-actions, .not-found nav { display: flex; gap: 1.5rem; flex-wrap: wrap; margin-top: 2rem; }
+[data-has-hero] .content-panel { border: 0; }
+[data-has-hero] .sl-container { max-width: 76rem; }
+@media (max-width: 50rem) { :root { --sl-nav-height: 4rem; } .site-title { font-size: 1rem; } .sl-markdown-content { font-size: 1rem; } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none!important; transition: none!important; scroll-behavior: auto!important; } }
 
-[data-has-hero] .page {
-    background: linear-gradient(215deg, var(--overlay-blurple), transparent 40%), radial-gradient(var(--overlay-blurple), transparent 40%) no-repeat -60vw -40vh / 105vw 200vh, radial-gradient(var(--overlay-blurple), transparent 65%) no-repeat 50% calc(100% + 20rem) / 60rem 30rem
+/* Center reading columns within the main pane, including the page header. */
+.main-pane { --sl-content-margin-inline: auto; }
+
+/* Example workspaces use the available width; prose stays readable. */
+:root:has([data-workbench]) { --sl-content-width: 100%; }
+:root:has([data-workbench]) .sl-container { margin-inline: 0; }
+:root:has([data-workbench]) .sl-markdown-content > :is(p, ul, ol) { max-width: 75ch; }
+@media (min-width: 72rem) {
+    :root:has([data-workbench]) { --sl-content-pad-x: clamp(2rem, 3vw, 4rem); }
+    :root:has([data-workbench]) .main-pane { width: calc(100% - 12rem); min-width: 0; }
+    :root:has([data-workbench]) .right-sidebar-container { width: 12rem; flex-shrink: 0; }
+    :root:has([data-workbench]) .right-sidebar { width: 12rem; }
 }

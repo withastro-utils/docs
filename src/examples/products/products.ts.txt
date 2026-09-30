@@ -1,0 +1,7 @@
+// A local catalog keeps this example runnable without a database.
+// Replace the filter in your server callback with your application's query.
+export const products = [
+    { name: 'Notebook', price: 12 },
+    { name: 'Desk lamp', price: 35 },
+    { name: 'Headphones', price: 79 }
+];

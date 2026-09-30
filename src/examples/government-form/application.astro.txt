@@ -1,0 +1,63 @@
+---
+import { BButton, BInput, BOption, BSelect, BTextarea, Bind, BindForm, FormErrors } from '@astro-utils/forms/forms.js';
+import Layout from '../layouts/Layout.astro';
+
+type Form = {
+    application: { 
+        legalName: string; 
+        birthDate: string | Date; service: 
+        string; details: string 
+    }
+};
+
+const bind = Bind<Form>({application: Astro.locals.session.applicationDraft});
+let status = '';
+
+function saveDraft() {
+    Astro.locals.session.applicationDraft = bind.application;
+    status = 'Draft saved.';
+}
+
+async function submitApplication() {
+    await sendData(bind.application);
+    status = 'Application submitted.';
+
+    Astro.locals.session.applicationDraft = undefined;
+    bind.application = {}; // clear the form
+}
+---
+<Layout>
+    <span slot="title">Submit a service request</span>
+
+    <BindForm {bind}>
+        <FormErrors title="Check your application" />
+
+        <fieldset>
+            <legend>Applicant details</legend>
+
+            <label for="legalName">Legal name</label>
+            <BInput id="legalName" name="application.legalName" autocomplete="name" maxlength={60} required />
+
+            <label for="birthDate">Date of birth</label>
+            <BInput id="birthDate" name="application.birthDate" type="date" required />
+        </fieldset>
+
+        <fieldset>
+            <legend>Request</legend>
+
+            <label for="service">Service</label>
+            <BSelect id="service" name="application.service">
+                <BOption value="permit">Permit application</BOption>
+                <BOption value="record">Public record request</BOption>
+            </BSelect>
+
+            <label for="details">Supporting details</label>
+            <BTextarea id="details" name="application.details" maxlength={600} required />
+        </fieldset>
+
+        <BButton onClick={saveDraft}>Save draft</BButton>
+        <BButton onClick={submitApplication} whenFormOK>Submit application</BButton>
+
+        {status && <p role="status">{status}</p>}
+    </BindForm>
+</Layout>

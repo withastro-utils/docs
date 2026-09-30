@@ -1,12 +1,34 @@
-.sl-markdown-content :not(a, strong, em, del, span, input, code, li) + :not(a, strong, em, del, span, input, code, :where(.not-content *)) {
-    margin-top: 0!important;
-    margin-bottom: 1.5rem!important;
+.expressive-code {
+    margin-block: 1.75rem;
 }
 
-.frame.is-terminal {
-    margin-top: 1.5rem!important;
+.expressive-code .frame {
+    overflow: hidden;
+    border: 1px solid var(--au-border);
+    border-radius: var(--au-radius-panel);
+    box-shadow: var(--au-shadow-sm);
 }
 
-.frame .ec-line {
-    margin-bottom: 0!important;
+.expressive-code .frame .header {
+    min-height: 2.65rem;
+    border-bottom: 1px solid var(--au-border);
+    border-radius: 0;
+    background: var(--au-surface-soft);
+}
+
+.expressive-code .frame pre {
+    border: 0;
+    border-radius: 0;
+}
+
+.expressive-code .copy button {
+    border-radius: var(--au-radius-control);
+}
+
+.expressive-code .ec-line {
+    margin-block: 0;
+}
+
+.expressive-code :is(pre, code) {
+    font-family: var(--sl-font-mono);
 }

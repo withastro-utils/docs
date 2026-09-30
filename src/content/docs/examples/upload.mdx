@@ -1,0 +1,26 @@
+---
+title: Upload a large file
+description: Chunked transfer, progress, and completion feedback.
+lastUpdated: 2026-09-12
+---
+
+import CodePreview from '../../../components/CodePreview.astro';
+import { uploadExample } from '../../../examples/registry';
+
+Complete the [Forms setup](/docs/guides/forms/getting-started/) first, or use the configuration, middleware, and layout files in the sidebar. Install `@astro-utils/forms` and `@astrojs/node` in an existing Astro project.
+
+## Try the interaction
+
+Select a file and upload it. Use the preview’s **Simulate upload failure** option to compare success with a retryable error.
+
+<CodePreview example={uploadExample} />
+
+## How it works
+
+The source uploads the selected file and reports its metadata. Add your application processing in `saveFile`. The embedded preview simulates transfer progress and never sends your file to a server.
+
+`UploadBigFileProgress for="file"` matches the upload control’s `name="file"`, even when its HTML ID is `document`. Every `BButton` submits its containing form, so put actions that must not upload the selected file outside that form. See [upload limits and failure handling](/docs/reference/forms/upload-big-file/#configure-upload-limits).
+
+## Continue
+
+Review [Forms configuration](/docs/reference/forms/configuration/).

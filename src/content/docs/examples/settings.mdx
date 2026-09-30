@@ -1,0 +1,24 @@
+---
+title: Edit profile settings
+description: Text, select, and textarea fields in one form.
+lastUpdated: 2026-09-12
+---
+
+import CodePreview from '../../../components/CodePreview.astro';
+import { settingsExample } from '../../../examples/registry';
+
+Complete the [Forms setup](/docs/guides/forms/getting-started/) first, or use the configuration, middleware, and layout files in the sidebar. Install `@astro-utils/forms` and `@astrojs/node` in an existing Astro project.
+
+## Try the interaction
+
+Change the name, language, and bio, then save. In your own project, reload the page to see the session-backed values restored.
+
+<CodePreview example={settingsExample} />
+
+## How it works
+
+The source reads and writes a small preferences object through `Astro.locals.session`. The embedded preview only demonstrates the controls and save feedback. Use application storage for preferences that must survive session expiry or work across devices.
+
+## Continue
+
+Explore the [input component reference](/docs/reference/forms/basic-form-components/).

@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en" data-theme="light" data-blue="sky">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex,nofollow">
+    <title>Astro Utils · Blue design concept</title>
+    <style>
+        @font-face { font-family: Manrope; src: url('./node_modules/@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2') format('woff2'); font-weight: 200 800; font-display: swap; }
+        :root { color-scheme: light; --bg:#f7f9fc; --surface:#fff; --soft:#eef2f8; --text:#15213a; --muted:#526078; --line:#dde3ed; --input:#78869e; --brand:#2457e6; --link:#2457e6; --tint:#e9efff; --light-blue:#b8ccff; --shadow:0 22px 60px #233d7720; }
+        :root[data-blue=sky] { --brand:#0b6ead; --link:#0b6ead; --tint:#e6f3fb; --light-blue:#b6e1fb; }
+        :root[data-blue=indigo] { --brand:#5146c9; --link:#5146c9; --tint:#eeecff; --light-blue:#cdc8ff; }
+        :root[data-theme=dark] { color-scheme:dark; --bg:#0b1020; --surface:#111a2e; --soft:#17233b; --text:#f1f5ff; --muted:#a9b8d3; --line:#293853; --input:#7083a4; --link:#91b2ff; --tint:#1b2d50; --shadow:0 22px 60px #0003; }
+        :root[data-theme=dark][data-blue=sky] { --link:#82cfff; --tint:#133247; }
+        :root[data-theme=dark][data-blue=indigo] { --link:#bcb5ff; --tint:#282349; }
+        * { box-sizing:border-box; }
+        body { margin:0; background:var(--bg); color:var(--text); font-family:Manrope,system-ui,sans-serif; line-height:1.6; }
+        button,input,select { font:inherit; }
+        button,select { cursor:pointer; }
+        a { color:var(--link); text-underline-offset:4px; }
+        button,a,input,select,summary { -webkit-tap-highlight-color:transparent; }
+        :focus-visible { outline:3px solid var(--link); outline-offset:4px; }
+        .skip { position:absolute; top:-100px; padding:12px; background:var(--surface); z-index:5; }.skip:focus { top:0; }
+        .lab { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px; padding:10px max(24px,calc((100vw - 1160px)/2)); background:var(--soft); border-bottom:1px solid var(--line); font-size:12px; }
+        .lab strong { font-weight:750; }.lab-controls { display:flex; flex-wrap:wrap; align-items:center; gap:8px; }.lab label { display:flex; align-items:center; gap:8px; }
+        select,.theme { background:var(--surface); color:var(--text); border:1px solid var(--input); padding:7px 12px; border-radius:5px; min-height:40px; }
+        .header { max-width:1160px; margin:auto; min-height:82px; display:flex; align-items:center; justify-content:space-between; gap:24px; padding:16px 0; border-bottom:1px solid var(--line); }
+        .brand { display:flex; align-items:center; gap:10px; color:var(--text); text-decoration:none; font-weight:800; font-size:21px; letter-spacing:-.6px; white-space:nowrap; }
+        .mark { display:grid; place-items:center; width:32px; height:32px; background:var(--brand); color:#fff; border-radius:6px; font:700 18px ui-monospace,monospace; letter-spacing:-3px; padding-right:3px; }
+        nav { display:flex; align-items:center; flex-wrap:wrap; gap:24px; }nav a { color:var(--muted); text-decoration:none; font-size:13px; font-weight:650; min-height:40px; display:flex; align-items:center; } nav a:hover { color:var(--link); }
+        main { max-width:1160px; margin:auto; }
+        .hero { display:grid; grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr); align-items:center; gap:48px; padding:38px 0 38px; }
+        .eyebrow { margin:0 0 20px; color:var(--link); font:600 11px ui-monospace,monospace; letter-spacing:1.3px; text-transform:uppercase; display:flex; align-items:center; gap:10px; }.eyebrow:before { content:''; width:22px; height:2px; background:currentColor; }
+        h1 { margin:0; font-size:clamp(40px,4.6vw,62px); font-weight:700; line-height:1.08; letter-spacing:-2.9px; }h1 em { font-style:normal; color:var(--link); }
+        .lead { max-width:440px; margin:24px 0; color:var(--muted); font-size:16px; line-height:1.8; }.actions { display:flex; flex-wrap:wrap; align-items:center; gap:20px; margin:26px 0; }
+        .primary { color:#fff; background:var(--brand); border:1px solid transparent; border-radius:6px; padding:12px 18px; text-decoration:none; font-size:13px; font-weight:700; min-height:46px; display:inline-flex; align-items:center; justify-content:center; gap:22px; transition:transform 140ms ease,filter 140ms ease; }.primary:hover { filter:brightness(1.12); }.primary:active { transform:translateY(1px); }
+        .secondary { font-size:13px; font-weight:650; }.command { display:flex; align-items:center; gap:10px; color:var(--muted); font:12px ui-monospace,monospace; flex-wrap:wrap; }.command code { overflow-wrap:anywhere; }.command button { border:1px solid var(--line); background:var(--surface); color:var(--text); padding:6px 10px; border-radius:4px; min-height:40px; }
+        .workspace { min-width:0; background:var(--brand); padding:20px; border-radius:10px; box-shadow:var(--shadow); position:relative; }
+        .workspace-label { display:flex; justify-content:space-between; align-items:center; gap:12px; color:#fff; margin:0 0 18px; font:11px ui-monospace,monospace; }.workspace-label span:last-child { color:#fff; opacity:.85; }
+        .editor { overflow:hidden; background:#101b34; border:1px solid #ffffff40; border-radius:6px; color:#edf3ff; }.editor-head { display:flex; justify-content:space-between; gap:12px; padding:11px 16px; border-bottom:1px solid #ffffff24; font:11px ui-monospace,monospace; color:#c0cee8; }.editor-head b { font-weight:400; color:#97b6ff; }
+        pre { margin:0; padding:14px 18px; overflow:auto; font:12px/1.55 ui-monospace,SFMono-Regular,Consolas,monospace; tab-size:4; }pre:focus-visible { outline-offset:-3px; }.kw { color:#b8afff; }.fn { color:#94beff; }.tag { color:#8be0d2; }.str { color:#f3cd9d; }
+        .return-line { display:flex; align-items:center; gap:10px; margin:14px 0; color:white; font:10px ui-monospace,monospace; }.return-line:before,.return-line:after { content:''; height:1px; flex:1; background:#ffffff50; }
+        .form-preview { background:var(--surface); border-radius:6px; padding:18px; }.form-head { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px; }.form-head strong { font-size:15px; }.badge { padding:3px 7px; border:1px solid var(--line); color:var(--muted); font:10px ui-monospace,monospace; border-radius:4px; }
+        .field-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }.field-row label { font-size:11px; font-weight:650; }.field-row input { width:100%; min-width:0; display:block; margin-top:5px; padding:9px; border:1px solid var(--input); border-radius:4px; color:var(--text); background:var(--bg); font-size:13px; min-height:40px; }.form-foot { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-top:14px; }.form-foot .primary { min-height:40px; padding:8px 12px; font-size:11px; }.status { color:var(--muted); font-size:11px; max-width:250px; }.disclosure { color:white; font-size:10px; margin:13px 0 0; line-height:1.5; }
+        .facts { display:grid; grid-template-columns:1.4fr 1fr 1fr; border-block:1px solid var(--line); padding:24px 0; gap:24px; align-items:center; }.facts p { margin:0; color:var(--muted); font-size:13px; }.facts strong { font-size:28px; font-weight:650; color:var(--text); margin-right:10px; }.facts span { font-size:12px; color:var(--muted); }.facts .fact-intro { color:var(--text); font-size:14px; font-weight:600; }
+        .section { padding:68px 0; border-bottom:1px solid var(--line); }.section-top { display:flex; justify-content:space-between; align-items:start; gap:32px; margin-bottom:30px; }h2 { font-size:32px; line-height:1.2; letter-spacing:-1px; font-weight:650; margin:0; }.section-top p { max-width:390px; font-size:14px; color:var(--muted); margin:0; }.comparisons { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:28px; }.comparison { border-top:2px solid var(--line); padding-top:18px; }.comparison:hover { border-color:var(--link); }.comparison span { font:11px ui-monospace,monospace; color:var(--link); }.comparison h3 { margin:9px 0; font-size:18px; }.comparison p { color:var(--muted); font-size:13px; }.comparison small { color:var(--muted); font-size:11px; display:block; }
+        .reading { display:grid; grid-template-columns:180px minmax(0,1fr) 160px; border:1px solid var(--line); border-radius:8px; overflow:hidden; background:var(--surface); }.rail { display:block; padding:24px 18px; background:var(--bg); font-size:12px; }.rail strong { font-size:11px; color:var(--muted); }.rail a { display:block; padding:8px; color:var(--muted); text-decoration:none; margin-top:4px; }.rail a.current { border-left:2px solid var(--link); background:var(--tint); color:var(--link); font-weight:700; }.article { padding:34px; min-width:0; }.crumb { font-size:11px; color:var(--muted); }.article h3 { font-size:29px; margin:12px 0; letter-spacing:-1px; }.article p { font-size:15px; line-height:1.85; color:var(--muted); }.note { border-left:3px solid var(--link); padding:14px 18px; background:var(--tint); font-size:13px; }.toc { padding:28px 16px; border-left:1px solid var(--line); font-size:11px; color:var(--muted); }.toc a { display:block; margin:14px 0; }
+        .calculator { display:grid; grid-template-columns:1.25fr 1fr; gap:40px; align-items:center; }.calc-inputs { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; }.calc-inputs label { font-size:12px; color:var(--muted); }.calc-inputs input { display:block; width:100%; margin-top:8px; padding:12px; min-height:44px; border:1px solid var(--input); background:var(--surface); border-radius:5px; color:var(--text); }.estimate { border-left:2px solid var(--link); padding-left:30px; }.estimate output { color:var(--link); font-size:40px; font-weight:650; line-height:1.2; display:block; letter-spacing:-1px; }.estimate p,.calc-note { color:var(--muted); font-size:12px; }.calc-note { margin-bottom:0; }.footer { display:flex; justify-content:space-between; gap:20px; padding:28px 0 40px; color:var(--muted); font-size:12px; }.footer a { color:var(--muted); }
+        @media(max-width:1220px) { .header,main { margin-inline:28px; }.hero { gap:32px; } }
+        @media(max-width:900px) { .hero { grid-template-columns:1fr; padding-top:45px; }.hero-copy { max-width:600px; } h1 { font-size:54px; }.lead { max-width:580px; }.workspace { max-width:680px; width:100%; }.reading { grid-template-columns:155px minmax(0,1fr); }.toc { display:none; }.section-top { display:block; }.section-top p { margin-top:18px; }.calculator { grid-template-columns:1fr; }.header { flex-wrap:wrap; gap:10px; }nav { gap:20px; } }
+        @media(max-width:560px) { .header,main { margin-inline:20px; }.lab { padding:12px 20px; }.lab-controls { width:100%; }.lab label { flex:1; }.header { padding:18px 0 12px; }.brand { font-size:18px; } nav { width:100%; gap:22px; }nav a { font-size:12px; }h1 { font-size:42px; letter-spacing:-1.8px; }.hero { gap:30px; padding-top:32px; }.hero .eyebrow { font-size:10px; }.workspace { padding:13px; }.workspace-label { font-size:9px; }.form-preview { padding:14px; }.field-row { grid-template-columns:1fr; }.field-row input { font-size:16px; }.facts { grid-template-columns:1fr 1fr; gap:18px; }.facts .fact-intro { grid-column:1/-1; }.facts strong { font-size:25px; }.facts span { display:block; }.comparisons { grid-template-columns:1fr; gap:22px; }.section { padding:44px 0; }h2 { font-size:28px; }.reading { display:block; }.rail { padding:14px; border-bottom:1px solid var(--line); }.rail a:not(.current) { display:none; }.article { padding:24px; }.calc-inputs { grid-template-columns:1fr; }.calc-inputs label { display:grid; grid-template-columns:1fr 90px; gap:12px; align-items:center; }.calc-inputs input { margin:0; }.estimate { padding-left:20px; }.estimate output { font-size:34px; }.footer { flex-direction:column; }.command { font-size:11px; } }
+        @media(prefers-reduced-motion:reduce) { *,*::before,*::after { animation:none!important; transition:none!important; scroll-behavior:auto!important; } }
+    </style>
+</head>
+<body>
+    <a class="skip" href="#main">Skip to concept</a>
+    <div class="lab"><div><strong>DESIGN STUDY / 02</strong> &nbsp; A new blue direction for Astro Utils</div><div class="lab-controls"><label>Blue <select id="blue"><option value="cobalt">Cobalt</option><option value="sky" selected>Sky · selected direction</option><option value="indigo">Indigo · richer</option></select></label><button class="theme" id="theme" aria-pressed="false">Dark mode</button></div></div>
+    <header class="header"><a href="#main" class="brand"><span class="mark" aria-hidden="true">[↵]</span> Astro Utils</a><nav aria-label="Concept navigation"><a href="#reading">Documentation</a><a href="#familiar">The familiar part</a><a href="#savings">Time saved</a><a href="https://github.com/withastro-utils/utils">GitHub ↗</a></nav></header>
+    <main id="main">
+        <section class="hero" aria-labelledby="headline">
+            <div class="hero-copy"><p class="eyebrow">Server-first forms for Astro</p><h1 id="headline">Your form.<br>Your server.<br><em>One place.</em></h1><p class="lead">Bring form state, validation, and server actions together in your <strong>.astro</strong> components. Keep the workflow close. Keep Astro feeling like Astro.</p><div class="actions"><a class="primary" href="http://127.0.0.1:4322/docs/guides/forms/getting-started/">Start with Forms <span aria-hidden="true">→</span></a><a class="secondary" href="http://127.0.0.1:4322/docs/examples/">Explore the examples ↗</a></div><div class="command"><span aria-hidden="true">$</span><code>npm install @astro-utils/forms</code><button id="copy" type="button">Copy</button><span id="copy-status" role="status"></span></div></div>
+            <div class="workspace"><div class="workspace-label"><span>01 / THE FORM WORKSPACE</span><span>.astro → HTML</span></div><div class="editor"><div class="editor-head"><span>signup.astro</span><b>Existing source · excerpt</b></div><pre tabindex="0" aria-label="Existing signup source excerpt"><code><span class="kw">const</span> bind = <span class="fn">Bind</span>&lt;AccountForm&gt;();
+
+<span class="kw">async function</span> <span class="fn">signUp</span>() {
+    <span class="kw">await</span> createAccount(bind);
+    bind.sent = <span class="kw">true</span>;
+}
+
+&lt;<span class="tag">BButton</span> onClick={signUp} whenFormOK&gt;
+    Create account
+&lt;/<span class="tag">BButton</span>&gt;</code></pre></div><div class="return-line">BIND &nbsp;→&nbsp; VALIDATE &nbsp;→&nbsp; RESPOND</div><form class="form-preview" id="demo"><div class="form-head"><strong>Create your account</strong><span class="badge">UI preview</span></div><div class="field-row"><label>Name<input name="name" placeholder="Alex" autocomplete="off" required></label><label>Email<input name="email" type="email" placeholder="alex@example.com" autocomplete="off" required></label></div><div class="form-foot"><span class="status" id="demo-status" role="status">Ready when you are.</span><button class="primary" type="submit">Create account <span aria-hidden="true">↗</span></button></div></form><p class="disclosure">Interactive UI mockup. Submission is simulated locally; no account or server request is created. Source excerpt omits setup and application logic.</p></div>
+        </section>
+        <div class="facts"><p class="fact-intro">Small surface.<br>Plenty to build with.</p><div><strong>6</strong><span>existing examples to explore</span></div><div><strong>3</strong><span>utility areas: forms, context, endpoints</span></div></div>
+        <section class="section" id="familiar"><div class="section-top"><h2>A familiar idea.<br>An Astro workflow.</h2><p>Different background, recognizable concepts. Bring what you already know about building on the server.</p></div><div class="comparisons"><article class="comparison"><span>01 / COMING FROM C#</span><h3>ASP.NET Web Forms</h3><p>Server events. Bound controls. State across postbacks. A familiar way to think about a form.</p><small>TypeScript and Astro components; not the ASP.NET runtime or identical ViewState behavior.</small></article><article class="comparison"><span>02 / COMING FROM PHP</span><h3>HTML meets the server</h3><p>A page renders a form, the server handles the input, and the user sees the result.</p><small>A related workflow, with different syntax and execution semantics.</small></article><article class="comparison"><span>03 / COMING FROM NEXT.JS</span><h3>Actions close to the UI</h3><p>The familiar idea of invoking server behavior from a form, expressed through Astro components.</p><small>Not React Server Components or the Next.js Server Actions API.</small></article></div></section>
+        <section class="section" id="reading"><div class="section-top"><h2>Expressive up front.<br>Quiet when you read.</h2><p>Documentation surface study. Existing introductory copy, a visible location marker, and a comfortable reading measure.</p></div><div class="reading"><nav class="rail" aria-label="Documentation specimen"><strong>FORMS</strong><a class="current" href="#reading">Getting started</a><a href="http://127.0.0.1:4322/docs/guides/forms/data-binding/">Binding &amp; validation</a><a href="http://127.0.0.1:4322/docs/guides/forms/loops-and-components/">Reusable components</a><a href="http://127.0.0.1:4322/docs/guides/forms/js-helpers/">Server helpers</a></nav><article class="article"><div class="crumb">Documentation &nbsp;/&nbsp; Forms</div><h3 id="specimen-title">Getting started</h3><p>Install Astro Utils Forms and submit your first server-handled form.</p><p>Astro-Utils Forms is a set of tools to help you build forms in Astro. It provides similar functionality to ASP.NET Web Forms, but with a modern approach.</p><div class="note"><strong>Design specimen</strong><br>This panel demonstrates typography and surfaces. Read the existing guide for setup and API details.</div></article><aside class="toc" aria-label="Specimen contents"><strong>On this page</strong><a href="#specimen-title">Getting started</a><span>Focused reading.<br>Clear orientation.</span></aside></div></section>
+        <section class="section" id="savings"><div class="section-top"><h2>What could less<br>setup mean for you?</h2><p>Explore the arithmetic using your own assumptions. These prefilled values are arbitrary examples, not measured development times.</p></div><div class="calculator"><div><div class="calc-inputs"><label>Forms per month<input id="forms" type="number" min="0" max="10000" step="1" value="8"></label><label>Current minutes / form<input id="before" type="number" min="0" max="100000" step="1" value="90"></label><label>Expected minutes / form<input id="after" type="number" min="0" max="100000" step="1" value="60"></label></div><p class="calc-note">Forms × (current − expected minutes) ÷ 60. Includes only the work you enter.</p></div><div class="estimate"><output id="estimate" aria-live="polite">4 hours</output><p id="estimate-label">Potential time saved per month with these assumptions.</p><span class="badge">Illustrative estimate · not benchmark data</span></div></div></section>
+        <footer class="footer"><span>Astro Utils / Cobalt design study · September 2026</span><a href="plans/blue-design-rethink.md">Read the research and implementation plan ↗</a></footer>
+    </main>
+    <script>
+        const root = document.documentElement;
+        document.querySelector('#blue').addEventListener('change', event => { root.dataset.blue = event.target.value; });
+        document.querySelector('#theme').addEventListener('click', event => {
+            const dark = root.dataset.theme !== 'dark';
+            root.dataset.theme = dark ? 'dark' : 'light';
+            event.currentTarget.textContent = dark ? 'Light mode' : 'Dark mode';
+            event.currentTarget.setAttribute('aria-pressed', String(dark));
+        });
+        document.querySelector('#demo').addEventListener('submit', event => {
+            event.preventDefault();
+            document.querySelector('#demo-status').textContent = 'Preview complete. No account was created.';
+        });
+        document.querySelector('#copy').addEventListener('click', async () => {
+            try { await navigator.clipboard.writeText('npm install @astro-utils/forms'); document.querySelector('#copy-status').textContent = 'Copied'; }
+            catch { document.querySelector('#copy-status').textContent = 'Select the command to copy it manually.'; }
+        });
+        function calculate() {
+            const fields = ['forms','before','after'].map(id => document.getElementById(id));
+            const output = document.querySelector('#estimate');
+            const label = document.querySelector('#estimate-label');
+            if (fields.some(field => field.value === '' || !field.validity.valid || !Number.isFinite(field.valueAsNumber))) {
+                output.textContent = 'Check your inputs'; label.textContent = 'Enter non-negative whole numbers within the input limits.'; return;
+            }
+            const [forms, before, after] = fields.map(field => field.valueAsNumber);
+            const hours = forms * (before - after) / 60;
+            const amount = Math.abs(hours).toLocaleString(undefined, {maximumFractionDigits:2});
+            output.textContent = amount + (Math.abs(hours) === 1 ? ' hour' : ' hours');
+            label.textContent = hours < 0 ? 'Additional time per month with these assumptions.' : hours === 0 ? 'No difference with these assumptions.' : 'Potential time saved per month with these assumptions.';
+        }
+        ['forms','before','after'].forEach(id => document.getElementById(id).addEventListener('input', calculate));
+    </script>
+</body>
+</html>

@@ -1,110 +1,90 @@
 ---
-title: Getting started
-description: How to use astro forms
+title: Getting Started
+description: Install Astro Utils Forms and run a complete server action without an external service.
+lastUpdated: 2026-09-12
 ---
 
-import { Tabs, TabItem } from '@astrojs/starlight/components';
+import { Aside } from '@astrojs/starlight/components';
+import InstallTabs from '../../../../components/InstallTabs.astro';
+import CodePreview from '../../../../components/CodePreview.astro';
+import { submitActionExample } from '../../../../examples/guide';
 
-# Introduction
+Build a form that sends a name to your server and renders a greeting. Start inside an existing Astro project; no database or email provider is needed.
 
-Astro-Utils Forms is a set of tools to help you build forms in Astro.
-It provides similar functionality to ASP.NET Web Forms, but with a modern approach.
+<Aside type="note" title="Use server rendering">
+Forms need on-demand rendering. This guide configures the Node adapter and a single `WebForms` root.
+</Aside>
 
-Some of the features:
+## 1. Install Forms and the adapter
 
-- ✅ Client & Server side form validation
-- ✅ Forms [CSRF](https://developer.mozilla.org/en-US/docs/Glossary/CSRF) protection
-- ✅ Web Controls (Data Binding) + View State
-- ✅ JWT session
+<InstallTabs packages="@astro-utils/forms @astrojs/node" />
 
-## Installation
+## 2. Configure Astro
 
-First install the package
-
-<Tabs>
-<TabItem label="npm">
-
-```sh
-npm install @astro-utils/forms
-```
-
-</TabItem>
-<TabItem label="bun">
-
-```sh
-bun i @astro-utils/forms
-```
-
-</TabItem>
-<TabItem label="pnpm">
-
-```sh
-pnpm add @astro-utils/forms
-```
-
-</TabItem>
-<TabItem label="Yarn">
-
-```sh
-yarn add @astro-utils/forms
-```
-
-</TabItem>
-</Tabs>
-
-
-## Adding integration & middleware
-
-Edit your `astro.config.ts` to add the integration
-```ts
+```js title="astro.config.mjs"
 import { defineConfig } from 'astro/config';
-import formDebug from "@astro-utils/forms/dist/integration.js";
+import node from '@astrojs/node';
+import forms from '@astro-utils/forms/dist/integration.js';
 
 export default defineConfig({
-  output: 'server',
-  integrations: [formDebug]
+    output: 'server',
+    adapter: node({ mode: 'standalone' }),
+    integrations: [forms]
 });
 ```
 
-This integration change the way Astro handle the render - will render in the order it was written, to allow the forms to work properly.
+## 3. Add middleware
 
-Edit
-`src/middleware.ts` to add the middleware
-```ts
-import astroFormsMiddleware from "@astro-utils/forms";
-import {sequence} from "astro/middleware";
+```ts title="src/middleware.ts"
+import forms from '@astro-utils/forms';
 
-export const onRequest = sequence(astroFormsMiddleware());
+export const onRequest = forms();
 ```
 
+The default is enough for local development. For deployed projects, pass a stable environment secret through the [middleware configuration](/docs/reference/forms/configuration/). Keep it stable across restarts and out of source control. For an existing middleware chain, compose this middleware with Astro's `sequence()` helper.
 
-## Editing Main Layout
+## 4. Add the shared layout
 
-Add `WebForms` component to the main project layout
+Use one `WebForms` root around your form content. The examples throughout these docs import this layout.
 
-```astro
+```astro title="src/layouts/Layout.astro"
 ---
-import { WebForms } from "@astro-utils/forms/forms.js";
-
-export interface Props {
-  title: string;
-}
-
-const { title } = Astro.props;
+import { WebForms } from '@astro-utils/forms/forms.js';
 ---
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="generator" content={Astro.generator} />
-    <title>{title}</title>
-  </head>
-  <body>
-    <WebForms>
-      <slot />
-    </WebForms>
-  </body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width" />
+        <title><slot name="title" /></title>
+    </head>
+    <body>
+        <WebForms>
+            <slot />
+        </WebForms>
+    </body>
 </html>
 ```
+
+## 5. Create your first form
+
+Save the following page as `src/pages/hello.astro`. **Preview** simulates the same interaction inside the docs; running the page in your own project executes the callback on your server.
+
+<CodePreview example={submitActionExample} />
+
+## 6. Run it
+
+Start your Astro project with your package manager's `dev` script. Open `/hello` on the URL printed by Astro, enter a name, and select **Say hello**. You should see **Hello, Alex! Your server action ran.** when you enter Alex. An empty name prevents the valid-only callback.
+
+## What happens on submit
+
+1. `WebForms` receives the POST request.
+2. `BindForm` restores state and validates the submitted controls.
+3. `BButton` calls `greet` when validation succeeds.
+4. The form renders again with the updated message.
+
+`message` is request-local feedback. Use `omitState` when feedback is stored on `bind` but should not persist into the next submission.
+
+## Next steps
+
+Learn [binding and validation](/docs/guides/forms/data-binding/), or adapt the [account example](/docs/examples/signup/) to your application. If the action does not run, check server rendering, middleware, the integration, and the `WebForms` layout first.

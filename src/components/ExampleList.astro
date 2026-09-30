@@ -1,0 +1,37 @@
+---
+import { examples } from '../examples/registry';
+import type { Example } from '../examples/schema';
+type Props = { limit?: number; items?: Example[] };
+const { items = examples, limit = items.length } = Astro.props;
+const base = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/`;
+---
+<div class="example-list not-content">
+    {items.slice(0, limit).map(example => <a href={example.guideUrl}>
+        <picture>
+            <source data-theme-image srcset={`${base}example-thumbnails/${example.id}-dark.webp`} media="(prefers-color-scheme: dark)" />
+            <img src={`${base}example-thumbnails/${example.id}-light.webp`} width="88" height="88" alt="" loading="lazy" decoding="async" />
+        </picture>
+        <div><strong>{example.title}</strong><p>{example.description}</p></div><span aria-hidden="true">↗</span>
+    </a>)}
+</div>
+<script>
+    const updateImages = () => {
+        const dark = document.documentElement.dataset.theme === 'dark';
+        document.querySelectorAll<HTMLSourceElement>('[data-theme-image]').forEach(source => {
+            source.media = dark ? 'all' : 'not all';
+        });
+    };
+    updateImages();
+    new MutationObserver(updateImages).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+</script>
+<style>
+    .example-list { display:grid; gap:.75rem; margin-block:1.5rem; }
+    a { display:grid; grid-template-columns:88px minmax(0,1fr) auto; align-items:center; gap:1.3rem; padding:.8rem; text-decoration:none; border:1px solid var(--au-border); border-radius:12px; background:var(--au-surface-raised); transition:background .2s,border-color .2s; }
+    a:hover { background:var(--au-surface-soft); border-color:var(--au-accent); }
+    picture, img { display:block; }
+    img { border-radius:9px; object-fit:cover; }
+    strong { color:var(--sl-color-white); font-size:1rem; }
+    p { margin:.35rem 0 0; color:var(--sl-color-gray-2); font-size:.85rem; line-height:1.7; }
+    a > span { color:var(--au-accent); padding:.5rem; }
+    @media(max-width:35rem) { a { grid-template-columns:64px minmax(0,1fr); gap:.85rem; }img { width:64px; height:64px; }a > span { display:none; }p { font-size:.78rem; } }
+</style>

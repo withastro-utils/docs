@@ -1,0 +1,56 @@
+---
+import { BButton, BInput, Bind, BindForm } from '@astro-utils/forms/forms.js';
+
+import Layout from '../layouts/Layout.astro';
+
+type TaskForm = {
+    newTask: string;
+    message: string;
+};
+
+type TodoTask = {
+    title: string;
+    id: string;
+}
+
+const bind = Bind<TaskForm>({ newTask: '', message: '' });
+const tasks: TodoTask[] = Astro.locals.session.tasks ??= [{ id: 'limits', title: 'Review upload limits' }, { id: 'notes', title: 'Publish migration notes' }];
+
+async function addTask() {
+    tasks.push({title: bind.newTask, id: crypto.randomUUID()});
+
+    bind.message = `${bind.newTask} added.`;
+    bind.newTask = '';
+}
+
+async function removeTask(id: string, title: string) {
+    const index = tasks.findIndex(task => task.id === id);
+    if (index === -1) {
+        bind.message = 'This task has already been removed.';
+        return;
+    }
+    tasks.splice(index, 1);
+
+    bind.message = `${title} removed.`;
+}
+---
+
+<Layout>
+<span slot="title">Manage a task list</span>
+<BindForm {bind} omitState={['message']}> <!-- omitState = ensure this info will be removed in the next action -->
+    {bind.message && <p role="status">{bind.message}</p>}
+
+    <label for="newTask">New task</label>
+    <BInput id="newTask" name="newTask" minlength={2} maxlength={80} required />
+    <BButton onClick={addTask} whenFormOK>Add task</BButton>
+
+    <ul>
+        {tasks.map(task => (
+            <li>
+                <span>{task.title}</span>
+                <BButton onClick={() => removeTask(task.id, task.title)}>Remove</BButton>
+            </li>
+        ))}
+    </ul>
+</BindForm>
+</Layout>

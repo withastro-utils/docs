@@ -1,0 +1,23 @@
+---
+import { BButton, BInput, Bind, BindForm, FormErrors } from '@astro-utils/forms/forms.js';
+import Layout from '../layouts/Layout.astro';
+
+const bind = Bind({ name: '' });
+let message = '';
+
+function greet() {
+    message = `Hello, ${bind.name}! Your server action ran.`;
+}
+---
+<Layout>
+    <span slot="title">Your first form</span>
+    <BindForm {bind}>
+        <FormErrors />
+        
+        <label for="name">Your name</label>
+        <BInput id="name" name="name" required maxlength={40} />
+
+        <BButton onClick={greet} whenFormOK>Say hello</BButton>
+        {message && <p role="status">{message}</p>}
+    </BindForm>
+</Layout>

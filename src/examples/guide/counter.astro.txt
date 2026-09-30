@@ -1,0 +1,21 @@
+---
+import { Bind, BindForm, BButton } from '@astro-utils/forms/forms.js';
+import Layout from '../layouts/Layout.astro';
+
+type Form = {
+    counter: number;
+}
+
+const bind = Bind<Form>({counter: 0});
+
+function incCounter(){
+    bind.counter++;
+}
+---
+<Layout>
+    <BindForm {bind}>
+        Counter: {bind.counter}
+
+        <BButton onClick={incCounter}>Increase counter</BButton>
+    </BindForm>
+</Layout>

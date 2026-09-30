@@ -1,0 +1,145 @@
+---
+import ExampleList from "./ExampleList.astro";
+import {
+  todoExample,
+  uploadExample,
+  governmentFormExample,
+} from "../examples/registry";
+const base = `${import.meta.env.BASE_URL.replace(/\/$/, "")}/`;
+const paths = [
+  {
+    name: "Forms",
+    text: "Bind fields, validate input, and handle server actions.",
+    href: "guides/forms/getting-started/",
+  },
+  {
+    name: "Context",
+    text: "Share typed, request-local state across server utilities.",
+    href: "guides/context/",
+  },
+  {
+    name: "Endpoints",
+    text: "Use Express-style routing and response helpers in Astro.",
+    href: "guides/express-endpoints/",
+  },
+];
+---
+
+<div class="landing-sections not-content">
+  <section aria-labelledby="examples-title">
+    <div class="section-heading">
+      <h2 id="examples-title">Start with something useful.</h2><a
+        href={`${base}examples/`}>All examples ↗</a>
+    </div><ExampleList
+      items={[todoExample, uploadExample, governmentFormExample]}
+    />
+  </section>
+  <section aria-labelledby="paths-title">
+    <h2 id="paths-title">Build on Astro.</h2><div class="paths">
+      {
+        paths.map((path) => (
+          <a href={`${base}${path.href}`}>
+            <>
+              <h3>
+                {path.name} <span aria-hidden="true">↗</span>
+              </h3>
+              <p>{path.text}</p>
+            </>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+  <section aria-labelledby="agents-title">
+    <h2 id="agents-title">Building with an AI agent?</h2><p>
+      Give your agent the <a href={`${base}llms.txt`}>documentation index</a>,
+      start with the <a href={`${base}agents/getting-started.md`}
+        >implementation guide</a
+      >, or download the <a href={`${base}llms-full.txt`}
+        >complete Markdown documentation</a
+      >. All examples include source files.
+    </p>
+  </section>
+  <details>
+    <summary>Coming from ASP.NET, PHP, or Next.js?</summary><p>
+      Astro Utils brings familiar server-side ideas into Astro: bound controls
+      and postbacks for ASP.NET developers, HTML close to server logic for PHP
+      developers, and form actions close to the UI for Next.js developers. The
+      APIs and state model are specific to Astro Utils.
+    </p>
+  </details>
+</div>
+<style>
+  section {
+    padding: 3rem 0;
+    border-top: 1px solid var(--au-border);
+  }
+  .section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  h2 {
+    margin: 0;
+    color: var(--sl-color-white);
+    font-size: clamp(1.6rem, 3vw, 2rem);
+    letter-spacing: -0.035em;
+    line-height: 1.25;
+  }
+  a {
+    color: var(--au-accent);
+    font-size: 0.85rem;
+    text-underline-offset: 4px;
+  }
+  .paths {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2rem;
+    margin-top: 1.8rem;
+  }
+  .paths a {
+    text-decoration: none;
+  }
+  .paths a:hover h3 {
+    color: var(--au-accent);
+  }
+  h3 {
+    display: flex;
+    justify-content: space-between;
+    margin: 0;
+    color: var(--sl-color-white);
+    font-size: 1rem;
+  }
+  h3 span {
+    color: var(--au-accent);
+  }
+  p {
+    color: var(--sl-color-gray-2);
+    font-size: 0.85rem;
+    line-height: 1.8;
+    margin: 0.65rem 0 0;
+  }
+  details {
+    border-block: 1px solid var(--au-border);
+    padding: 1.2rem 0;
+    margin-bottom: 2rem;
+  }
+  summary {
+    cursor: pointer;
+    color: var(--sl-color-gray-1);
+    font-size: 0.85rem;
+  }
+  @media (max-width: 40rem) {
+    .paths {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+    .section-heading {
+      align-items: start;
+    }
+    .section-heading > a {
+      flex-shrink: 0;
+    }
+  }
+</style>

@@ -1,0 +1,23 @@
+---
+title: Filter a product catalog
+description: Bound input, server-side filtering, and updated results in one Astro component.
+---
+
+import CodePreview from '../../../components/CodePreview.astro';
+import { productsExample } from '../../../examples/registry';
+
+Query on the server. Render in the same component. This example uses a small local catalog so you can run it without a database; replace the filter callback with your own database query when connecting real products.
+
+## Try the interaction
+
+Set a maximum price and apply the filter. Try **10** for no results, **50** for two products, or **100** for the full catalog. Negative and empty prices are rejected.
+
+<CodePreview example={productsExample} />
+
+## How it works
+
+`Bind` restores the submitted budget, `BInput` validates the field, and `BButton` runs `filterProducts` on the server when the form is valid. Astro renders the result count and matching rows together. The embedded preview simulates this interaction locally.
+
+## Run it yourself
+
+Follow the [Forms setup](/docs/guides/forms/getting-started/) or copy the configuration, middleware, and shared layout from the file sidebar. Add both the page and catalog files at the paths shown.

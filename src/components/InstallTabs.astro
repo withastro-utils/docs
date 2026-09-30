@@ -1,0 +1,20 @@
+---
+import { Code } from 'astro-expressive-code/components';
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+type Props = { packages: string };
+const { packages } = Astro.props;
+const managers = [{ label: 'npm', command: 'npm install' }, { label: 'Bun', command: 'bun add' }, { label: 'pnpm', command: 'pnpm add' }, { label: 'Yarn', command: 'yarn add' }];
+---
+<div class="installation not-content" aria-label="Install packages">
+    <Tabs syncKey="package-manager">{managers.map(manager => <TabItem label={manager.label}><Code code={`${manager.command} ${packages}`} lang="sh" frame="none" /></TabItem>)}</Tabs>
+</div>
+<style>
+    .installation { min-width:0; overflow:hidden; border:1px solid var(--au-border); border-radius:var(--au-radius-panel); background:var(--au-code-bg); margin-block:1.5rem; }
+    .installation :global(starlight-tabs), .installation :global(.tablist-wrapper), .installation :global([role='tabpanel']), .installation :global(.expressive-code) { margin:0; }
+    .installation :global([role='tabpanel']) { padding:0; }
+    .installation :global([role='tablist']) { margin:0; border-bottom:1px solid var(--au-border); background:var(--au-surface-soft); }
+    .installation :global([role='tab']) { padding:.65rem 1rem; font-size:.8rem; min-height:2.75rem; border:0; color:var(--sl-color-gray-2); }
+    .installation :global([aria-selected='true']) { color:var(--au-accent); background:var(--au-code-bg); box-shadow:inset 0 2px var(--au-accent); }
+    .installation :global(.frame) { border:0; border-radius:0; box-shadow:none; }
+    .installation :global(pre) { padding-block:1.15rem; }
+</style>

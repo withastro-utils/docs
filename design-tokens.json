@@ -1,0 +1,241 @@
+{
+    "$schema": "https://design-tokens.github.io/community-group/format/",
+    "color": {
+        "dark": {
+            "canvas": {
+                "$value": "#0b1523",
+                "$type": "color"
+            },
+            "nav": {
+                "$value": "#0b1523",
+                "$type": "color"
+            },
+            "surface": {
+                "$value": "#111e30",
+                "$type": "color"
+            },
+            "surfaceStrong": {
+                "$value": "#15273b",
+                "$type": "color"
+            },
+            "textStrong": {
+                "$value": "#f0f7fc",
+                "$type": "color"
+            },
+            "text": {
+                "$value": "#b4c8d8",
+                "$type": "color"
+            },
+            "textMuted": {
+                "$value": "#99b1c4",
+                "$type": "color"
+            },
+            "border": {
+                "$value": "#293e53",
+                "$type": "color"
+            },
+            "borderStrong": {
+                "$value": "#70879e",
+                "$type": "color"
+            },
+            "accent": {
+                "$value": "#82cfff",
+                "$type": "color"
+            }
+        },
+        "light": {
+            "canvas": {
+                "$value": "#f8fbfd",
+                "$type": "color"
+            },
+            "nav": {
+                "$value": "#ffffff",
+                "$type": "color"
+            },
+            "surface": {
+                "$value": "#ffffff",
+                "$type": "color"
+            },
+            "surfaceStrong": {
+                "$value": "#edf5fa",
+                "$type": "color"
+            },
+            "textStrong": {
+                "$value": "#152b3d",
+                "$type": "color"
+            },
+            "text": {
+                "$value": "#496175",
+                "$type": "color"
+            },
+            "textMuted": {
+                "$value": "#526c80",
+                "$type": "color"
+            },
+            "border": {
+                "$value": "#d9e5ed",
+                "$type": "color"
+            },
+            "borderStrong": {
+                "$value": "#788da0",
+                "$type": "color"
+            },
+            "accent": {
+                "$value": "#0b6ead",
+                "$type": "color"
+            }
+        },
+        "brand": {
+            "action": {
+                "$value": "#0b6ead",
+                "$type": "color"
+            },
+            "actionHover": {
+                "$value": "#085a90",
+                "$type": "color"
+            }
+        }
+    },
+    "font": {
+        "family": {
+            "sans": {
+                "$value": "Manrope Variable, Manrope, ui-sans-serif, system-ui, sans-serif",
+                "$type": "fontFamily"
+            },
+            "mono": {
+                "$value": "IBM Plex Mono, ui-monospace, monospace",
+                "$type": "fontFamily"
+            }
+        },
+        "weight": {
+            "regular": {
+                "$value": 400,
+                "$type": "fontWeight"
+            },
+            "medium": {
+                "$value": 550,
+                "$type": "fontWeight"
+            },
+            "semibold": {
+                "$value": 650,
+                "$type": "fontWeight"
+            },
+            "bold": {
+                "$value": 780,
+                "$type": "fontWeight"
+            }
+        }
+    },
+    "space": {
+        "1": {
+            "$value": "0.25rem",
+            "$type": "dimension"
+        },
+        "2": {
+            "$value": "0.5rem",
+            "$type": "dimension"
+        },
+        "3": {
+            "$value": "0.75rem",
+            "$type": "dimension"
+        },
+        "4": {
+            "$value": "1rem",
+            "$type": "dimension"
+        },
+        "5": {
+            "$value": "1.25rem",
+            "$type": "dimension"
+        },
+        "6": {
+            "$value": "1.5rem",
+            "$type": "dimension"
+        },
+        "8": {
+            "$value": "2rem",
+            "$type": "dimension"
+        },
+        "10": {
+            "$value": "2.5rem",
+            "$type": "dimension"
+        },
+        "12": {
+            "$value": "3rem",
+            "$type": "dimension"
+        },
+        "16": {
+            "$value": "4rem",
+            "$type": "dimension"
+        },
+        "20": {
+            "$value": "5rem",
+            "$type": "dimension"
+        },
+        "24": {
+            "$value": "6rem",
+            "$type": "dimension"
+        }
+    },
+    "radius": {
+        "control": {
+            "$value": "0.375rem",
+            "$type": "dimension"
+        },
+        "button": {
+            "$value": "0.375rem",
+            "$type": "dimension"
+        },
+        "panel": {
+            "$value": "0.625rem",
+            "$type": "dimension"
+        },
+        "hero": {
+            "$value": "0.75rem",
+            "$type": "dimension"
+        },
+        "round": {
+            "$value": "999px",
+            "$type": "dimension"
+        }
+    },
+    "motion": {
+        "duration": {
+            "fast": {
+                "$value": "140ms",
+                "$type": "duration"
+            },
+            "standard": {
+                "$value": "200ms",
+                "$type": "duration"
+            },
+            "enter": {
+                "$value": "520ms",
+                "$type": "duration"
+            }
+        },
+        "ease": {
+            "standard": {
+                "$value": "cubic-bezier(0.22, 1, 0.36, 1)",
+                "$type": "cubicBezier"
+            }
+        }
+    },
+    "layout": {
+        "content": {
+            "$value": "46rem",
+            "$type": "dimension"
+        },
+        "landing": {
+            "$value": "76rem",
+            "$type": "dimension"
+        },
+        "sidebar": {
+            "$value": "17rem",
+            "$type": "dimension"
+        },
+        "navHeight": {
+            "$value": "4.25rem",
+            "$type": "dimension"
+        }
+    }
+}

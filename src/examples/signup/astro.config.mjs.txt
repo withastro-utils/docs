@@ -1,0 +1,9 @@
+import { defineConfig } from 'astro/config';
+import node from '@astrojs/node';
+import forms from '@astro-utils/forms/dist/integration.js';
+
+export default defineConfig({
+    output: 'server',
+    adapter: node({ mode: 'standalone' }),
+    integrations: [forms]
+});

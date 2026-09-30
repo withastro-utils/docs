@@ -1,0 +1,16 @@
+---
+import { WebForms } from '@astro-utils/forms/forms.js';
+---
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width" />
+        <title><slot name="title" /></title>
+    </head>
+    <body>
+        <WebForms>
+            <slot />
+        </WebForms>
+    </body>
+</html>

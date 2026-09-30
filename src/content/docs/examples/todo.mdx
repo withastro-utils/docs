@@ -1,0 +1,24 @@
+---
+title: Manage a task list
+description: Adding and removing repeated items.
+lastUpdated: 2026-09-12
+---
+
+import CodePreview from '../../../components/CodePreview.astro';
+import { todoExample } from '../../../examples/registry';
+
+Complete the [Forms setup](/docs/guides/forms/getting-started/) first, or use the configuration, middleware, and layout files in the sidebar. Install `@astro-utils/forms` and `@astrojs/node` in an existing Astro project.
+
+## Try the interaction
+
+Add a task, then remove it. Removal does not require a valid value in the new-task field.
+
+<CodePreview example={todoExample} />
+
+## How it works
+
+The runnable source stores a small list in the signed session cookie. It survives page reloads while that session remains valid; it is not shared between devices. Keep the list small or move it to application storage. The removal handler checks that the item still exists before changing the list.
+
+## Continue
+
+Learn about [stable keys and reusable components](/docs/guides/forms/loops-and-components/).

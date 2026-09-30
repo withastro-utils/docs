@@ -1,0 +1,24 @@
+---
+title: Create an account
+description: Account fields and valid-only actions.
+lastUpdated: 2026-09-12
+---
+
+import CodePreview from '../../../components/CodePreview.astro';
+import { signupExample } from '../../../examples/registry';
+
+Complete the [Forms setup](/docs/guides/forms/getting-started/) first, or use the configuration, middleware, and layout files in the sidebar. Install `@astro-utils/forms` and `@astrojs/node` in an existing Astro project.
+
+## Try the interaction
+
+Enter a name and email, then submit. An invalid email is rejected before the action runs.
+
+<CodePreview example={signupExample} />
+
+## How it works
+
+The runnable source stores the submitted details in the signed session. It does not create a database account or send an email. Replace that small callback with your account service once the form works.
+
+## Continue
+
+Learn how to [show custom validation errors](/docs/guides/forms/data-binding/#validate-a-reserved-name).

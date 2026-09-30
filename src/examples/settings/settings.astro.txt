@@ -1,0 +1,37 @@
+---
+import { BButton, BInput, BOption, BSelect, BTextarea, Bind, BindForm, FormErrors } from '@astro-utils/forms/forms.js';
+import Layout from '../layouts/Layout.astro';
+
+type Preferences = { name: string; locale: string; bio: string };
+
+const bind = Bind<Preferences>(Astro.locals.session.preferences ?? { name: 'Ari Chen', locale: 'en', bio: '' });
+let saved = false;
+
+function savePreferences() {
+    Astro.locals.session.preferences = { name: bind.name, locale: bind.locale, bio: bind.bio };
+    saved = true;
+}
+---
+<Layout>
+    <span slot="title">Edit profile settings</span>
+    <BindForm {bind}>
+        <FormErrors />
+
+        {saved && <p role="status">Preferences saved.</p>}
+
+        <label for="name">Display name</label>
+        <BInput id="name" name="name" maxlength={40} required />
+
+        <label for="locale">Language</label>
+        <BSelect id="locale" name="locale">
+            <BOption value="en">English</BOption>
+            <BOption value="es">Spanish</BOption>
+            <BOption value="fr">French</BOption>
+        </BSelect>
+
+        <label for="bio">Bio</label>
+        <BTextarea id="bio" name="bio" maxlength={180} />
+        
+        <BButton onClick={savePreferences} whenFormOK>Save changes</BButton>
+    </BindForm>
+</Layout>

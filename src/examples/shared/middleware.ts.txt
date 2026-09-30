@@ -1,0 +1,3 @@
+import forms from '@astro-utils/forms';
+
+export const onRequest = forms();

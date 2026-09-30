@@ -1,0 +1,285 @@
+---
+import { Code } from "astro-expressive-code/components";
+import type { Example } from "../examples/schema";
+const { example } = Astro.props as { example: Example };
+---
+
+<section class="workbench not-content" data-workbench aria-label={`${example.title} example`}>
+  <div class="workbench-toolbar"><strong>Example workspace</strong><button data-toggle aria-pressed="false">Preview</button></div>
+  <div class="workbench-body">
+    <nav class="files" aria-label="Example files">
+      <span class="files-heading">Files</span>
+      {
+        example.files.map((file, index) => (
+          <button data-file={index} aria-current={index === 1 ? "true" : undefined} title={file.label} aria-label={file.label}>
+            <>
+              <span class="file-icon" aria-hidden="true">
+                {file.lang === "astro" ? (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                    {file.label.includes("/layouts/") ? (
+                      <>
+                        <rect x="3" y="3" width="18" height="18" rx="2" />
+                        <path d="M3 9h18M9 9v12" />
+                      </>
+                    ) : (
+                      <>
+                        <path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9zM14 3v6h6M9 13l-2 2 2 2M15 13l2 2-2 2" />
+                      </>
+                    )}
+                  </svg>
+                ) : (
+                  "{ }"
+                )}
+              </span>
+              <span>
+                <small>{file.label.includes("/") ? file.label.slice(0, file.label.lastIndexOf("/")) : "Project root"}</small>
+                {file.label.split("/").at(-1)}
+              </span>
+            </>
+          </button>
+        ))
+      }
+    </nav>
+    <div class="source">
+      {
+        example.files.map((file, index) => (
+          <div data-source={index} hidden={index !== 1}>
+            <>
+              <div class="file-heading">{file.label}</div>
+              <Code code={file.code.trim()} lang={file.lang} frame="none" />
+            </>
+          </div>
+        ))
+      }
+    </div>
+    <div class="live-preview">
+      <div class="file-heading">Preview <span>Interactive demo</span></div><iframe
+        data-preview-url={example.previewUrl}
+        title={`${example.title} preview`}
+        sandbox="allow-forms allow-scripts allow-same-origin"></iframe>
+    </div>
+  </div>
+  <div class="workbench-footer"><span>Server behavior is simulated</span><a href={example.previewUrl} target="_blank" rel="noreferrer">Open preview ↗</a></div>
+</section>
+<script>
+  document.querySelectorAll<HTMLElement>("[data-workbench]").forEach((workspace) => {
+    const frame = workspace.querySelector("iframe")!;
+    const toggle = workspace.querySelector<HTMLButtonElement>("[data-toggle]")!;
+    const link = workspace.querySelector<HTMLAnchorElement>(".workbench-footer a")!;
+    let wide = false;
+    const sync = () => {
+      const theme = document.documentElement.dataset.theme === "dark" ? "dark" : "light";
+      const url = new URL(frame.dataset.previewUrl!, location.href);
+      url.searchParams.set("theme", theme);
+      link.href = url.toString();
+      if ((wide || toggle.getAttribute("aria-pressed") === "true") && !frame.hasAttribute("src")) frame.src = url.toString();
+      if (frame.hasAttribute("src")) frame.contentWindow?.postMessage({ type: "astro-utils-preview-theme", theme }, "*");
+    };
+    workspace.querySelectorAll<HTMLButtonElement>("[data-file]").forEach((button) =>
+      button.addEventListener("click", () => {
+        workspace.querySelectorAll("[data-file]").forEach((file) => file.removeAttribute("aria-current"));
+        button.setAttribute("aria-current", "true");
+        workspace.querySelectorAll<HTMLElement>("[data-source]").forEach((panel) => (panel.hidden = panel.dataset.source !== button.dataset.file));
+      }),
+    );
+    toggle.addEventListener("click", () => {
+      const open = toggle.getAttribute("aria-pressed") !== "true";
+      toggle.setAttribute("aria-pressed", String(open));
+      workspace.classList.toggle("preview-open", open);
+      sync();
+    });
+    new ResizeObserver((entries) => {
+      wide = entries[0].contentRect.width >= 1050;
+      sync();
+    }).observe(workspace);
+    new MutationObserver(sync).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+    frame.addEventListener("load", sync);
+    sync();
+  });
+</script>
+<style>
+  .workbench {
+    container-type: inline-size;
+    min-width: 0;
+    margin-block: 1.75rem;
+    border: 1px solid var(--au-border);
+    border-radius: var(--au-radius-panel);
+    overflow: hidden;
+    background: var(--au-code-bg);
+  }
+  .workbench-toolbar,
+  .workbench-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.65rem 1rem;
+    background: var(--au-surface-soft);
+    font-size: 0.75rem;
+  }
+  .workbench-toolbar {
+    border-bottom: 1px solid var(--au-border);
+  }
+  .workbench-toolbar strong {
+    font-weight: 600;
+  }
+  button {
+    color: var(--sl-color-gray-2);
+    background: transparent;
+    border: 0;
+    font: inherit;
+    cursor: pointer;
+  }
+  [data-toggle] {
+    padding: 0.35rem 0.8rem;
+    border-radius: 5px;
+    border: 1px solid var(--au-border);
+  }
+  [data-toggle][aria-pressed="true"] {
+    color: var(--au-accent);
+    background: var(--au-code-bg);
+  }
+  .workbench-body {
+    display: grid;
+    grid-template-columns: 13rem minmax(0, 1fr);
+  }
+  .files {
+    min-width: 0;
+    background: var(--au-surface-raised);
+    border-right: 1px solid var(--au-border);
+    padding: 0.65rem 0;
+  }
+  .files-heading {
+    display: block;
+    padding: 0.2rem 0.9rem 0.65rem;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .files button {
+    display: flex;
+    align-items: start;
+    gap: 0.6rem;
+    width: 100%;
+    padding: 0.65rem 0.8rem;
+    text-align: left;
+    font: 400 0.72rem/1.6 var(--sl-font-mono);
+    border-left: 2px solid transparent;
+    overflow-wrap: anywhere;
+  }
+  .file-icon {
+    display: inline-flex;
+    width: 1.2rem;
+    align-self: center;
+    white-space: nowrap;
+  }
+  .file-icon svg {
+    width: 1.2rem;
+    height: 1.2rem;
+  }
+  .files button small {
+    display: block;
+    font-size: 0.6rem;
+    color: var(--sl-color-gray-3);
+  }
+  .files button span:first-child {
+    color: var(--au-accent);
+    flex-shrink: 0;
+  }
+  .files button:hover {
+    background: var(--au-surface-hover);
+  }
+  .files button[aria-current] {
+    background: var(--au-surface-soft);
+    color: var(--au-accent);
+    border-left-color: var(--au-accent);
+  }
+  .source,
+  .live-preview {
+    min-width: 0;
+  }
+  .source [hidden] {
+    display: none;
+  }
+  .file-heading {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    padding: 0.8rem 1rem;
+    border-bottom: 1px solid var(--au-border);
+    color: var(--sl-color-gray-2);
+    font: 400 0.72rem/1.6 var(--sl-font-mono);
+    overflow-wrap: anywhere;
+  }
+  .file-heading span {
+    font-family: var(--sl-font);
+    opacity: 0.8;
+  }
+  .source :global(.expressive-code) {
+    margin: 0;
+  }
+  .source :global(.frame) {
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .source :global(pre) {
+    height: 36rem;
+    overflow: auto;
+    scrollbar-width: thin;
+  }
+  .live-preview {
+    display: none;
+  }
+  iframe {
+    width: 100%;
+    height: 36rem;
+    display: block;
+    border: 0;
+    background: var(--sl-color-bg);
+  }
+  .preview-open .source,
+  .preview-open .files {
+    display: none;
+  }
+  .preview-open .live-preview {
+    display: block;
+    grid-column: 1/-1;
+  }
+  .workbench-footer {
+    border-top: 1px solid var(--au-border);
+    font-size: 0.7rem;
+  }
+  .workbench-footer a {
+    color: var(--au-accent);
+  }
+  @container (min-width:1050px) {
+    .workbench-body {
+      grid-template-columns: 13rem minmax(0, 1fr) minmax(20rem, 0.8fr);
+    }
+    .workbench-toolbar [data-toggle] {
+      display: none;
+    }
+    .live-preview,
+    .preview-open .source,
+    .preview-open .files {
+      display: block;
+    }
+    .preview-open .live-preview {
+      grid-column: auto;
+    }
+    .live-preview {
+      border-left: 1px solid var(--au-border);
+    }
+  }
+  @container (max-width:480px) {
+    .workbench-body {
+      grid-template-columns: 9rem minmax(0, 1fr);
+    }
+    .files button {
+      font-size: 0.65rem;
+      padding: 0.6rem 0.45rem;
+    }
+  }
+</style>

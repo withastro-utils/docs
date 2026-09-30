@@ -1,0 +1,30 @@
+---
+import { type BigFile, BButton, Bind, BindForm, FormErrors, UploadBigFile, UploadBigFileProgress } from '@astro-utils/forms/forms.js';
+
+import Layout from '../layouts/Layout.astro';
+
+type UploadForm = {
+    file: BigFile;
+};
+
+const bind = Bind<UploadForm>();
+let message = '';
+
+async function saveFile() {
+    message = `${bind.file.name} is ready.`;
+}
+---
+
+<Layout>
+<span slot="title">Upload a large file</span>
+<BindForm {bind}>
+    <FormErrors />
+    {message && <p role="status">{message}</p>}
+
+    <label for="file">Project archive</label>
+    <UploadBigFile id="document" name="file" required />
+    <UploadBigFileProgress for="file" />
+    
+    <BButton onClick={saveFile} whenFormOK>Upload file</BButton>
+</BindForm>
+</Layout>

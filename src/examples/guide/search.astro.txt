@@ -1,0 +1,30 @@
+---
+import { getCollection } from "astro:content";
+import { Bind, BindForm, BInput, BButton } from "@astro-utils/forms/forms.js";
+import Layout from "../layouts/Layout.astro";
+
+const bind = Bind({ query: "" });
+
+let products = await getCollection("products");
+
+async function search() {
+  products = products.filter(product => 
+    product.name.toLowerCase().includes(bind.name.toLowerCase())
+  );
+}
+---
+
+<Layout>
+  <BindForm {bind}>
+    <label for="query">Find a product</label>
+
+    <BInput id="query" name="query" />
+    <BButton onClick={search}>Search</BButton>
+
+    <p>{products.length} products found</p>
+
+    <ul>
+      {products.map(({ data }) => <li>{data.name} — ${data.price}</li>)}
+    </ul>
+  </BindForm>
+</Layout>

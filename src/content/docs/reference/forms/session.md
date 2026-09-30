@@ -1,23 +1,24 @@
 ---
-title:  session
-description: Forms session
+title: Session
+description: Configure a signed session cookie and share small values between Forms pages.
+lastUpdated: 2026-09-12
 ---
 
-astro-utils form use session to save [CSRF](https://developer.mozilla.org/en-US/docs/Glossary/CSRF) validation secrets.
+Astro Utils Forms uses a session to store [CSRF](https://developer.mozilla.org/en-US/docs/Glossary/CSRF) validation secrets and application values.
 
-This session is based on json web token, and is save (encrypted) in the browser cookie.
+The session is stored as an signed JSON Web Token in a browser cookie.
 
-## Using
+## Read and update session values
 
-Use can get the session with the activation of web forms
+Access the session through `Astro.locals` inside a page wrapped by `WebForms`.
 
-```astro
+```astro title="src/pages/session.astro"
 ---
 import { BindForm, BButton } from "@astro-utils/forms/forms.js";
 const { session } = Astro.locals;
+session.counter ??= 0;
 
 function increase() {
-  session.counter ??= 0;
   session.counter++;
 }
 ---
@@ -31,23 +32,28 @@ function increase() {
 
 All the configuration is in the middleware creation.
 
-`src/middleware.ts`
-
-```ts
+```ts title="src/middleware.ts"
 import astroFormsMiddleware from '@astro-utils/forms';
 import {sequence} from 'astro/middleware';
 
 export const onRequest = sequence(
     astroFormsMiddleware({
-        secret: 'my-secret',
+        secret: import.meta.env.FORMS_SECRET,
         session: {
             cookieName: 'session',
             cookieOptions: {
                 httpOnly: true,
-                sameSite: true,
-                maxAge: 1000 * 60 * 60 * 24 * 7,
+                sameSite: 'lax',
+                secure: import.meta.env.PROD,
+                maxAge: 60 * 60 * 24 * 7,
             },
         },
     })
 );
 ```
+
+## Lifetime and contents
+
+`maxAge` is measured in seconds; the example lasts seven days. Keep `FORMS_SECRET` stable across restarts. An expired or invalid token starts an empty session; changing the signing secret invalidates existing sessions.
+
+A signature detects tampering; it does **not** hide the payload from the cookie holder. Store small identifiers and preferences, not passwords or confidential records. Cookies have a limited size and accompany requests, so move growing lists and durable data into application storage. Set `secure` for HTTPS deployments; local HTTP development needs it disabled.

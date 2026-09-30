@@ -1,0 +1,56 @@
+---
+import { Code } from 'astro-expressive-code/components';
+import { TabItem, Tabs } from '@astrojs/starlight/components';
+import ExampleWorkbench from './ExampleWorkbench.astro';
+import type { Example } from '../examples/schema';
+type Props = { example: Example };
+const { example } = Astro.props;
+const expanded = Astro.url.pathname.includes('/examples/');
+---
+{expanded ? <ExampleWorkbench {example} /> : <section class="code-preview not-content" data-code-preview aria-label={`${example.title} example`}>
+    <Tabs>
+        {example.files.slice(0, 1).map(file => <TabItem label={file.label}><Code code={file.code.trim()} lang={file.lang} frame="none" wrap={example.id === 'search'} /></TabItem>)}
+        <TabItem label="Preview">
+            <iframe data-preview-url={example.previewUrl} title={`${example.title} preview`} sandbox="allow-forms allow-scripts allow-same-origin"></iframe>
+        </TabItem>
+        {example.files.slice(1).map(file => <TabItem label={file.label}><Code code={file.code.trim()} lang={file.lang} frame="none" wrap={example.id === 'search'} /></TabItem>)}
+    </Tabs>
+    <div class="preview-footer"><span>Interactive demo · server behavior is simulated</span><a href={example.previewUrl} data-preview-link target="_blank" rel="noreferrer">Open preview ↗</a></div>
+</section>}
+<script>
+    document.querySelectorAll<HTMLElement>('[data-code-preview]').forEach(workspace => {
+        const frame = workspace.querySelector('iframe');
+        const link = workspace.querySelector<HTMLAnchorElement>('[data-preview-link]');
+        const previewPanel = frame?.closest('[role="tabpanel"]');
+        const previewTab = workspace.querySelector(`[role="tab"][href="#${previewPanel?.id}"]`);
+        if (!frame || !previewTab) return;
+        const sync = () => {
+            const theme = document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
+            const url = new URL(frame.dataset.previewUrl!, location.href);
+            url.searchParams.set('theme', theme);
+            if (link) link.href = url.toString();
+            if (previewTab.getAttribute('aria-selected') === 'true' && !frame.hasAttribute('src')) frame.src = url.toString();
+            if (frame.hasAttribute('src')) frame.contentWindow?.postMessage({ type: 'astro-utils-preview-theme', theme }, '*');
+        };
+        frame.addEventListener('load', sync);
+        new MutationObserver(sync).observe(previewTab, { attributes: true, attributeFilter: ['aria-selected'] });
+        new MutationObserver(sync).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+        sync();
+    });
+</script>
+<style>
+    .code-preview { min-width:0; margin-block:1.75rem; overflow:hidden; border:1px solid var(--au-border); border-radius:var(--au-radius-panel); background:var(--au-code-bg); box-shadow:var(--au-shadow-sm); }
+    .code-preview :global(starlight-tabs) { margin:0; }
+    .code-preview :global(.tablist-wrapper) { margin:0; background:var(--au-surface-soft); }
+    .code-preview :global([role='tablist']) { margin:0; padding:0; border-bottom:1px solid var(--au-border); }
+    .code-preview :global([role='tab']) { min-height:2.9rem; padding:.7rem 1rem; font:500 .76rem var(--sl-font-mono); color:var(--sl-color-gray-2); border:0; }
+    .code-preview :global([aria-selected='true']) { color:var(--au-accent); background:var(--au-code-bg); box-shadow:inset 0 2px var(--au-accent); }
+    .code-preview :global([role='tabpanel']) { margin:0; padding:0; }
+    .code-preview :global([role='tabpanel'][hidden]) { display:none; }
+    .code-preview :global(.expressive-code) { margin:0; }
+    .code-preview :global(.frame) { border:0; border-radius:0; box-shadow:none; }
+    .code-preview :global(pre) { max-height:38rem; overflow:auto; scrollbar-width:thin; }
+    iframe { display:block; width:100%; height:32rem; border:0; background:var(--sl-color-bg); }
+    .preview-footer { display:flex; justify-content:space-between; flex-wrap:wrap; gap:.4rem 1rem; padding:.7rem 1rem; border-top:1px solid var(--au-border); color:var(--sl-color-gray-2); font-size:.7rem; }
+    .preview-footer a { color:var(--au-accent); text-underline-offset:3px; }
+</style>

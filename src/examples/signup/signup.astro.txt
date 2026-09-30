@@ -1,0 +1,34 @@
+---
+import { BButton, BInput, Bind, BindForm, FormErrors } from '@astro-utils/forms/forms.js';
+import Layout from '../layouts/Layout.astro';
+
+const bind = Bind({ name: '', email: '' });
+let message = '';
+
+function signUp() {
+    try {
+        signupUser({ name: bind.name, email: bind.email });
+        message = `Account details received for ${bind.email}.`;
+
+        bind.defaults();
+        Astro.locals.forms.redirectTimeoutSeconds('/', 2); // demo - not redirecting
+    } catch (error){
+        message = `Error: ${error.message}`;
+    }
+}
+---
+<Layout>
+    <span slot="title">Create an account</span>
+    <BindForm {bind}>
+        <FormErrors />
+        
+        <label for="name">Name</label>
+        <BInput id="name" name="name" required maxlength={40} />
+
+        <label for="email">Email</label>
+        <BInput id="email" name="email" type="email" required maxlength={120} />
+
+        <BButton onClick={signUp} whenFormOK>Create account</BButton>
+        {message && <p role="status">{message}</p>}
+    </BindForm>
+</Layout>

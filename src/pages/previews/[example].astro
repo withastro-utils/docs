@@ -1,0 +1,553 @@
+---
+import "@fontsource-variable/manrope/wght.css";
+
+export function getStaticPaths() {
+  return ["login", "todo", "settings", "upload", "government-form", "products", "search"].map((example) => ({ params: { example } }));
+}
+
+const { example } = Astro.params;
+const page = {
+  search: { eyebrow: "Collection search", title: "Find a product", intro: "Search the catalog by name. Try “lamp”." },
+  products: { eyebrow: "Catalog demo", title: "Find your next desk essential", intro: "Choose a budget to filter the product catalog." },
+  login: { eyebrow: "Member access", title: "Welcome back", intro: "Use your account credentials to continue." },
+  todo: { eyebrow: "Today", title: "Project tasks", intro: "Keep the next pieces of work moving." },
+  settings: { eyebrow: "Profile", title: "Personal settings", intro: "Choose how your account appears." },
+  upload: { eyebrow: "Documents", title: "Import a project", intro: "Large files upload in resilient chunks." },
+  "government-form": { eyebrow: "City services", title: "Service request", intro: "Your progress can be saved and resumed." },
+}[example as "login" | "todo" | "settings" | "upload" | "government-form" | "products" | "search"];
+---
+
+<html lang="en" data-pagefind-ignore>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="robots" content="noindex" />
+    <title>{page.title} preview</title>
+    <script is:inline>
+      const requestedTheme = new URLSearchParams(window.location.search).get("theme");
+      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      document.documentElement.dataset.theme = requestedTheme === "dark" || requestedTheme === "light" ? requestedTheme : systemTheme;
+
+      window.addEventListener("message", (event) => {
+        if (event.source !== window.parent || event.data?.type !== "astro-utils-preview-theme") return;
+        if (event.data.theme === "dark" || event.data.theme === "light") document.documentElement.dataset.theme = event.data.theme;
+      });
+    </script>
+    <!-- Standalone preview styles also apply to elements added by its scripts. -->
+    <style is:global>
+      :root {
+        color-scheme: light;
+        --preview-page-bg: #f8fbfd;
+        --preview-text: #152b3d;
+        --preview-muted: #496175;
+        --preview-accent: #0b6ead;
+        --preview-accent-hover: #085a90;
+        --preview-action: #0b6ead;
+        --preview-action-hover: #085a90;
+        --preview-accent-text: #0b6ead;
+        --preview-surface: #fff;
+        --preview-field: #f5f9fc;
+        --preview-border: #d9e5ed;
+        --preview-field-border: #788da0;
+        --preview-subtle: #e4f2fb;
+        --preview-drop-zone: #edf5fa;
+        --preview-focus: #0b6ead;
+        --preview-shadow: rgba(25, 48, 40, 0.12);
+      }
+      :root[data-theme="dark"] {
+        color-scheme: dark;
+        --preview-page-bg: #0b1523;
+        --preview-text: #f0f7fc;
+        --preview-muted: #b4c8d8;
+        --preview-accent: #82cfff;
+        --preview-accent-hover: #a4ddff;
+        --preview-action: #0b6ead;
+        --preview-action-hover: #085a90;
+        --preview-accent-text: #82cfff;
+        --preview-surface: #111e30;
+        --preview-field: #101c2c;
+        --preview-border: #293e53;
+        --preview-field-border: #70879e;
+        --preview-subtle: #153750;
+        --preview-drop-zone: #101c2c;
+        --preview-focus: #82cfff;
+        --preview-shadow: rgba(0, 0, 0, 0.38);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 2rem;
+        color: var(--preview-text);
+        background: var(--preview-page-bg);
+        font-family: "Manrope Variable", ui-sans-serif, system-ui, sans-serif;
+      }
+      main {
+        width: min(100%, 34rem);
+      }
+      .eyebrow {
+        margin: 0 0 0.5rem;
+        color: var(--preview-accent);
+        font-size: 0.75rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      h1 {
+        margin: 0;
+        font-size: 2rem;
+        letter-spacing: 0;
+      }
+      .intro {
+        margin: 0.65rem 0 1.5rem;
+        color: var(--preview-muted);
+      }
+      form {
+        display: grid;
+        gap: 0.65rem;
+        padding: 1.5rem;
+        border: 1px solid var(--preview-border);
+        border-radius: 14px;
+        background: var(--preview-surface);
+        box-shadow: 0 18px 50px var(--preview-shadow);
+      }
+      label {
+        margin-top: 0.35rem;
+        font-size: 0.85rem;
+        font-weight: 750;
+      }
+      input,
+      select,
+      textarea {
+        width: 100%;
+        min-height: 2.75rem;
+        padding: 0.7rem 0.8rem;
+        border: 1px solid var(--preview-field-border);
+        border-radius: 8px;
+        color: inherit;
+        background: var(--preview-field);
+        font: inherit;
+      }
+      textarea {
+        min-height: 5.5rem;
+        resize: vertical;
+      }
+      :is(input, select, textarea, button):focus-visible {
+        outline: 3px solid var(--preview-focus);
+        outline-offset: 2px;
+      }
+      button {
+        min-height: 2.75rem;
+        padding: 0.65rem 1rem;
+        border: 0;
+        border-radius: 8px;
+        color: #ffffff;
+        background: var(--preview-action);
+        font: inherit;
+        font-weight: 800;
+        cursor: pointer;
+      }
+      button:hover {
+        background: var(--preview-action-hover);
+      }
+      button:disabled {
+        cursor: wait;
+        opacity: 0.58;
+      }
+      ul {
+        display: grid;
+        gap: 0.6rem;
+        margin: 0.75rem 0 0;
+        padding: 0;
+        list-style: none;
+      }
+      li {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 0.75rem;
+        border: 1px solid var(--preview-border);
+        border-radius: 8px;
+      }
+      li[hidden] {
+        display: none;
+      }
+      li span {
+        min-width: 0;
+        overflow-wrap: anywhere;
+      }
+      li button {
+        flex-shrink: 0;
+        min-height: 2.25rem;
+        padding: 0.4rem 0.65rem;
+        color: var(--preview-accent-text);
+        background: var(--preview-subtle);
+        font-size: 0.8rem;
+      }
+      .status {
+        display: none;
+        margin: 0;
+        padding: 0.75rem;
+        border-left: 3px solid var(--preview-accent);
+        background: var(--preview-subtle);
+      }
+      .status[data-visible="true"] {
+        display: block;
+      }
+
+      .drop-zone {
+        padding: 1.25rem;
+        border: 1px dashed var(--preview-field-border);
+        border-radius: 6px;
+        background: var(--preview-drop-zone);
+        text-align: center;
+      }
+      progress {
+        width: 100%;
+        height: 0.55rem;
+        accent-color: var(--preview-accent);
+      }
+      fieldset {
+        display: grid;
+        gap: 0.65rem;
+        margin: 0;
+        padding: 1rem;
+        border: 1px solid var(--preview-border);
+        border-radius: 10px;
+      }
+      legend {
+        padding-inline: 0.4rem;
+        font-weight: 800;
+      }
+      .actions {
+        display: flex;
+        gap: 0.65rem;
+      }
+      .actions button:first-child {
+        color: var(--preview-accent-text);
+        background: var(--preview-subtle);
+      }
+      .track {
+        display: grid;
+        grid-template-columns: 1fr 1fr auto;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .track input {
+        min-width: 0;
+      }
+      .track button {
+        min-height: 2.75rem;
+      }
+      @media (max-width: 32rem) {
+        body {
+          padding: 1rem;
+        }
+        form {
+          padding: 1.1rem;
+        }
+      }
+      @media (max-width: 25rem) {
+        .track {
+          grid-template-columns: 1fr;
+        }
+        .actions {
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <p class="eyebrow">{page.eyebrow}</p>
+      <h1>{page.title}</h1>
+      <p class="intro">{page.intro}</p>
+      {
+        example === "search" && (
+          <form id="search-form">
+            <>
+              <label for="query">Find a product</label>
+              <input id="query" type="search" placeholder="Try lamp or notebook" />
+            </>
+            <button>Search</button>
+            <p role="status" id="search-count">
+              3 products found
+            </p>
+            <ul id="search-results">
+              <>
+                <li>Notebook — $12</li>
+                <li>Desk lamp — $35</li>
+                <li>Headphones — $79</li>
+              </>
+            </ul>
+          </form>
+        )
+      }
+      {
+        example === "products" && (
+          <form id="products-form">
+            <>
+              <label for="max-price">Maximum price ($)</label>
+              <input id="max-price" type="number" min="0" value="50" required />
+            </>
+            <button>Apply filter</button>
+            <p role="status" id="product-count">
+              2 products found
+            </p>
+            <ul id="products">
+              <>
+                <li data-price="12">Notebook — $12</li>
+                <li data-price="35">Desk lamp — $35</li>
+                <li data-price="79" hidden>
+                  Headphones — $79
+                </li>
+              </>
+            </ul>
+          </form>
+        )
+      }
+      {
+        example === "login" && (
+          <form id="login-form">
+            <p>Try demo@example.com / demo-only for success, or another password for an error.</p>
+            <>
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" autocomplete="email" required />
+            </>
+            <>
+              <label for="password">Password</label>
+              <input id="password" name="password" type="password" autocomplete="current-password" required />
+            </>
+            <button>Log in</button>
+            <p class="status" role="alert" />
+          </form>
+        )
+      }
+      {
+        example === "todo" && (
+          <form id="todo-form">
+            <p class="status" role="status" />
+            <>
+              <label for="task">New task</label>
+              <input id="task" minlength="2" maxlength="80" required />
+            </>
+            <button>Add task</button>
+            <ul id="tasks">
+              <>
+                <li>
+                  <>
+                    <span>Review upload limits</span>
+                    <button type="button">Remove</button>
+                  </>
+                </li>
+                <li>
+                  <>
+                    <span>Publish migration notes</span>
+                    <button type="button">Remove</button>
+                  </>
+                </li>
+              </>
+            </ul>
+          </form>
+        )
+      }
+      {
+        example === "settings" && (
+          <form data-message="Preferences saved.">
+            <p class="status" role="status" />
+            <>
+              <label for="name">Display name</label>
+              <input id="name" value="Ari Chen" maxlength="40" required />
+            </>
+            <>
+              <label for="locale">Language</label>
+              <select id="locale">
+                <>
+                  <option>English</option>
+                  <option>Spanish</option>
+                  <option>French</option>
+                </>
+              </select>
+            </>
+            <>
+              <label for="bio">Bio</label>
+              <textarea id="bio" maxlength="180" />
+            </>
+            <button>Save changes</button>
+          </form>
+        )
+      }
+      {
+        example === "upload" && (
+          <form id="upload-form">
+            <p class="status" role="status" />
+            <>
+              <label for="file">Project archive</label>
+              <div class="drop-zone">
+                <input id="file" type="file" required />
+              </div>
+            </>
+            <progress value="0" max="100">
+              0%
+            </progress>
+            <button>Upload file</button>
+          </form>
+        )
+      }
+      {
+        example === "government-form" && (
+          <form data-message="Draft saved.">
+            <fieldset>
+              <>
+                <legend>Applicant details</legend>
+                <label for="legal-name">Legal name</label>
+                <input id="legal-name" autocomplete="name" required />
+                <label for="birth-date">Date of birth</label>
+                <input id="birth-date" type="date" required />
+              </>
+            </fieldset>
+            <fieldset>
+              <>
+                <legend>Request</legend>
+                <label for="service">Service</label>
+                <select id="service">
+                  <>
+                    <option>Permit application</option>
+                    <option>Public record request</option>
+                  </>
+                </select>
+                <label for="details">Supporting details</label>
+                <textarea id="details" maxlength="800" required />
+              </>
+            </fieldset>
+            <div class="actions">
+              <>
+                <button data-message="Draft saved." formnovalidate>
+                  Save draft
+                </button>
+                <button data-clear-form data-message="Application submitted.">Submit application</button>
+              </>
+            </div>
+            <p class="status" role="status" />
+          </form>
+        )
+      }
+    </main>
+    <script is:inline>
+      document.querySelector("#search-form")?.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const query = document.querySelector("#query").value.toLowerCase();
+        const rows = [...document.querySelectorAll("#search-results li")];
+        rows.forEach((row) => (row.hidden = !row.textContent.split(" — ")[0].toLowerCase().includes(query)));
+        document.querySelector("#search-count").textContent = `${rows.filter((row) => !row.hidden).length} products found`;
+      });
+
+      document.querySelector("#products-form")?.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const budget = Number(document.querySelector("#max-price").value);
+        const rows = [...document.querySelectorAll("#products li")];
+        rows.forEach((row) => (row.hidden = Number(row.dataset.price) > budget));
+        document.querySelector("#product-count").textContent = `${rows.filter((row) => !row.hidden).length} products found`;
+      });
+
+      document.querySelectorAll("form[data-message]").forEach((form) =>
+        form.addEventListener("submit", (event) => {
+          event.preventDefault();
+          if (form.id === "upload-form") return;
+          const status = form.querySelector(".status");
+          if (status instanceof HTMLElement) {
+            const submitter = event instanceof SubmitEvent ? event.submitter : null;
+            status.textContent = submitter?.getAttribute("data-message") ?? form.getAttribute("data-message");
+            status.dataset.visible = "true";
+
+            if (submitter?.hasAttribute("data-clear-form")) {
+              form.reset();
+            }
+          }
+        }),
+      );
+
+      document.querySelector("#login-form")?.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const form = event.currentTarget;
+        const data = new FormData(form);
+        const status = form.querySelector(".status");
+        const success = data.get("email") === "demo@example.com" && data.get("password") === "demo-only";
+        status.setAttribute("role", success ? "status" : "alert");
+        status.textContent = success ? "Signed in to the demo." : "Email or password is incorrect.";
+        status.dataset.visible = "true";
+        form.querySelector("#password").value = "";
+      });
+
+      const todoForm = document.querySelector("#todo-form");
+      todoForm?.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const input = document.querySelector("#task");
+        const list = document.querySelector("#tasks");
+        const status = todoForm.querySelector(".status");
+        const task = input instanceof HTMLInputElement ? input.value.trim() : "";
+        if (!(input instanceof HTMLInputElement) || !list || !(status instanceof HTMLElement) || task.length < 2) return;
+        const item = document.createElement("li");
+        const label = document.createElement("span");
+        const button = document.createElement("button");
+        label.textContent = task;
+        button.type = "button";
+        button.textContent = "Remove";
+        item.append(label, button);
+        list.append(item);
+        input.value = "";
+        status.textContent = `${task} added.`;
+        status.dataset.visible = "true";
+        input.focus();
+      });
+
+      document.querySelector("#tasks")?.addEventListener("click", (event) => {
+        const button = event.target;
+        const item = button instanceof HTMLButtonElement ? button.closest("li") : null;
+        const label = item?.querySelector("span")?.textContent;
+        const status = todoForm?.querySelector(".status");
+        if (item && status instanceof HTMLElement) {
+          item.remove();
+          status.textContent = `${label} removed.`;
+          status.dataset.visible = "true";
+        }
+      });
+
+      document.querySelector("#upload-form")?.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const form = event.currentTarget;
+        const progress = form instanceof HTMLFormElement ? form.querySelector("progress") : null;
+        const status = form instanceof HTMLFormElement ? form.querySelector(".status") : null;
+        const button = form instanceof HTMLFormElement ? form.querySelector("button") : null;
+        const file = form instanceof HTMLFormElement ? form.querySelector("#file") : null;
+        if (
+          !(progress instanceof HTMLProgressElement) ||
+          !(status instanceof HTMLElement) ||
+          !(button instanceof HTMLButtonElement) ||
+          !(file instanceof HTMLInputElement) ||
+          !file.files?.[0] ||
+          button.disabled
+        )
+          return;
+        button.disabled = true;
+        progress.value = 0;
+        status.dataset.visible = "false";
+        const interval = setInterval(() => {
+          progress.value = Math.min(progress.value + 10, 100);
+          progress.textContent = `${progress.value}%`;
+          if (progress.value === 100) {
+            clearInterval(interval);
+            status.textContent = `${file.files[0].name} is ready.`;
+            status.dataset.visible = "true";
+            button.disabled = false;
+          }
+        }, 80);
+      });
+    </script>
+  </body>
+</html>

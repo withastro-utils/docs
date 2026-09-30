@@ -1,0 +1,24 @@
+---
+import { BButton, BInput, Bind, BindForm } from '@astro-utils/forms/forms.js';
+import Layout from '../layouts/Layout.astro';
+import { products } from '../data/products';
+
+const bind = Bind({ maxPrice: 50 });
+let matches = products.filter(product => product.price <= bind.maxPrice);
+
+function filterProducts() {
+    matches = products.filter(product => product.price <= bind.maxPrice);
+}
+---
+<Layout>
+    <span slot="title">Filter products</span>
+    <BindForm {bind}>
+        <label for="maxPrice">Maximum price ($)</label>
+        <BInput id="maxPrice" name="maxPrice" type="number" min={0} required />
+
+        <BButton onClick={filterProducts} whenFormOK>Apply filter</BButton>
+        
+        <p role="status">{matches.length} products found</p>
+        <ul>{matches.map(product => <li>{product.name} — ${product.price}</li>)}</ul>
+    </BindForm>
+</Layout>

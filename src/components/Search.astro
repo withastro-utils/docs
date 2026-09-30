@@ -1,0 +1,21 @@
+---
+import DefaultSearch from '@astrojs/starlight/components/Search.astro';
+const base = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/`;
+---
+<DefaultSearch />
+<template data-search-links><nav class="search-shortcuts" aria-label="Search shortcuts"><span>Explore</span><a href={`${base}guides/forms/getting-started/`}>Forms</a><a href={`${base}examples/`}>Examples</a><a href={`${base}guides/context/`}>Context</a><a href={`${base}guides/express-endpoints/`}>Endpoints</a></nav></template>
+<script>
+    const search = document.querySelector('site-search');
+    const template = document.querySelector<HTMLTemplateElement>('[data-search-links]');
+    const frame = search?.querySelector('.dialog-frame');
+    if (template && frame) frame.append(template.content.cloneNode(true));
+    search?.querySelector('dialog')?.addEventListener('close', () => {
+        search.querySelector<HTMLButtonElement>('[data-open-modal]')?.focus({ preventScroll: true });
+    });
+</script>
+<style is:global>
+    site-search .dialog-frame { flex-direction: column; }
+    .search-shortcuts { display:flex; flex-wrap:wrap; align-items:center; gap:.35rem 1rem; padding:.75rem 1.25rem; border-top:1px solid var(--au-border); font-size:.8rem; }
+    .search-shortcuts span { color:var(--sl-color-gray-3); font:.65rem var(--sl-font-mono); text-transform:uppercase; }
+    .search-shortcuts a { color:var(--au-accent); min-height:2.5rem; display:flex; align-items:center; text-underline-offset:4px; }
+</style>

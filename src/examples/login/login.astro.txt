@@ -1,0 +1,35 @@
+---
+import { BButton, BInput, Bind, BindForm, FormErrors } from '@astro-utils/forms/forms.js';
+import Layout from '../layouts/Layout.astro';
+
+const bind = Bind({ email: '', password: '' });
+
+let error = '';
+let message = '';
+
+function logIn() {
+    if (bind.email !== 'demo@example.com' || bind.password !== 'demo-only') {
+        error = 'Email or password is incorrect.';
+    } else {
+        Astro.locals.session.demoUserId = 'demo-user';
+        message = 'Signed in to the demo.';
+    }
+}
+---
+<Layout>
+    <span slot="title">Log in with feedback</span>
+    <BindForm {bind} omitState={['password']}>
+        <FormErrors />
+
+        {error && <p role="alert">{error}</p>}
+        {message && <p role="status">{message}</p>}
+
+        <label for="email">Email</label>
+        <BInput id="email" name="email" type="email" autocomplete="email" required />
+
+        <label for="password">Password</label>
+        <BInput id="password" name="password" type="password" autocomplete="current-password" required />
+
+        <BButton onClick={logIn} whenFormOK>Log in</BButton>
+    </BindForm>
+</Layout>

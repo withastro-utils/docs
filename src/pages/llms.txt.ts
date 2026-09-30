@@ -1,0 +1,6 @@
+import { documents, origin, base } from '../lib/agent-docs';
+export async function GET() {
+    const docs = await documents();
+    const groups = [['Start', docs.filter(d => !d.id.includes('/'))], ['Guides', docs.filter(d => d.id.startsWith('guides/'))], ['API reference', docs.filter(d => d.id.startsWith('reference/'))], ['Examples', docs.filter(d => d.id.startsWith('examples/'))]] as const;
+    return new Response(`# Astro Utils\n\n> Server-first forms, validation, state, request context, and Express-style endpoints for Astro.\n\nUse the Markdown links below; no browser or JavaScript is needed. Examples include filenames and setup code. Browser previews simulate server behavior. Consult the API reference for exact imports and limitations.\n\n## Build a feature\n\n- [Agent getting started](${origin}${base}agents/getting-started.md): Complete setup, product filter, collection search, and verification steps.\n\n${groups.map(([title, entries]) => `## ${title}\n\n${entries.map(d => `- [${d.title}](${origin}${d.path}): ${d.description}`).join('\n')}`).join('\n\n')}\n\n## Optional\n\n- [Complete documentation](${origin}${base}llms-full.txt): All guides, API references, and expanded examples in one download.\n`, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
+}

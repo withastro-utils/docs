@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://withastro-utils.github.io/docs/sitemap-index.xml

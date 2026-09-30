@@ -1,0 +1,30 @@
+---
+import { Bind, BindForm, BButton, BInput } from "@astro-utils/forms/forms.js";
+import Layout from "../layouts/Layout.astro";
+
+type Form = {
+    name: string;
+    age: number;
+}
+
+const bind = Bind<Form>();
+
+let showSubmitText = '';
+function formSubmit(){
+    showSubmitText = `Your name is ${bind.name}; you are ${bind.age} years old.`;
+    bind.age++;
+}
+---
+<Layout>
+    <BindForm {bind}>
+        {showSubmitText}
+
+        <label for="name">What is your name?</label>
+        <BInput id="name" type="text" name="name" maxlength={20} required/>
+
+        <label for="age">Enter age</label>
+        <BInput id="age" type="int" name="age" min={10} required/>
+
+        <BButton onClick={formSubmit} whenFormOK>Submit</BButton>
+    </BindForm>
+</Layout>

@@ -1,0 +1,136 @@
+---
+import LanguageSelect from '@astrojs/starlight/components/LanguageSelect.astro';
+import Search from './Search.astro';
+import SiteTitle from '@astrojs/starlight/components/SiteTitle.astro';
+import SocialIcons from '@astrojs/starlight/components/SocialIcons.astro';
+import ThemeSelect from '@astrojs/starlight/components/ThemeSelect.astro';
+
+const base = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/`;
+const path = Astro.url.pathname.replace(/\/$/, '');
+const links = [
+    { label: 'Docs', href: base, matches: (current: string) => current === base.replace(/\/$/, '') },
+    { label: 'Examples', href: `${base}examples/`, matches: (current: string) => current.includes(`${base}examples`) },
+    { label: 'Forms', href: `${base}guides/forms/getting-started/`, matches: (current: string) => current.includes('/forms/') },
+    { label: 'Context', href: `${base}guides/context/`, matches: (current: string) => current.includes('/context') },
+    { label: 'Endpoints', href: `${base}guides/express-endpoints/`, matches: (current: string) => current.includes('/express') }
+];
+---
+
+<div class:list={['au-header', { 'splash-header': Astro.locals.starlightRoute.entry.data.template === 'splash' }]}>
+    <div class="title-wrapper"><SiteTitle /></div>
+    <nav class="product-nav" aria-label="Product">
+        {links.map(link => <a href={link.href} aria-current={link.matches(path) ? (path === link.href.replace(/\/$/, '') ? 'page' : 'location') : undefined}>{link.label}</a>)}
+    </nav>
+    <div class="search"><Search /></div>
+    {Astro.locals.starlightRoute.entry.data.template === 'splash' && <details class="splash-menu"><summary>Menu</summary><div class="splash-menu-panel"><nav aria-label="Mobile product">{links.map(link => <a href={link.href}>{link.label}</a>)}</nav><ThemeSelect /></div></details>}
+    <div class="utilities">
+        <div class="social-icons"><SocialIcons /></div>
+        <ThemeSelect />
+        <LanguageSelect />
+    </div>
+</div>
+
+<style>
+    .splash-menu { position:relative; }
+    .splash-menu summary { cursor:pointer; min-height:2.6rem; display:flex; align-items:center; padding:.4rem .6rem; border:1px solid var(--au-border-strong); border-radius:var(--au-radius-control); font-size:.8rem; }
+    .splash-menu summary::-webkit-details-marker { display:none; }
+    .splash-menu-panel { position:absolute; z-index:10; right:0; top:calc(100% + 1rem); width:min(18rem,calc(100vw - 2rem)); background:var(--au-surface-raised); padding:1rem; border:1px solid var(--au-border-strong); border-radius:var(--au-radius-panel); box-shadow:var(--au-shadow-lg); }
+    .splash-menu-panel nav { display:grid; margin-bottom:1rem; }
+    .splash-menu-panel a { color:var(--sl-color-white); text-decoration:none; padding:.6rem; font-size:.9rem; }
+    .splash-menu-panel a:hover { background:var(--au-surface-soft); }
+    @media(max-width:75.99rem) { .au-header.splash-header { grid-template-columns:minmax(0,1fr) auto auto; }.splash-header .utilities { display:none; } }
+    @media(min-width:76rem) { .splash-menu { display:none; } }
+
+    .au-header {
+        width: 100%;
+        height: 100%;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: clamp(0.75rem, 2vw, 1.5rem);
+        align-items: center;
+    }
+
+    .title-wrapper,
+    .search {
+        min-width: 0;
+    }
+
+    .title-wrapper {
+        overflow: clip;
+    }
+
+    .product-nav {
+        display: none;
+        align-items: center;
+        gap: 0.25rem;
+    }
+
+    .product-nav a {
+        position: relative;
+        padding: 0.55rem 0.65rem;
+        border-radius: var(--au-radius-control);
+        color: var(--sl-color-gray-2);
+        font-size: 0.8rem;
+        font-weight: 600;
+        line-height: 1;
+        text-decoration: none;
+        transition: color var(--au-duration-fast) ease, background-color var(--au-duration-fast) ease;
+    }
+
+    .product-nav a:hover {
+        color: var(--sl-color-white);
+        background: var(--au-surface-hover);
+    }
+
+    .product-nav a[aria-current] {
+        color: var(--sl-color-white);
+    }
+
+    .product-nav a[aria-current]::after {
+        content: '';
+        position: absolute;
+        inset: auto 0.7rem -0.7rem;
+        height: 2px;
+        border-radius: 99px;
+        background: var(--au-accent);
+    }
+
+    .utilities {
+        display: none;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 0.8rem;
+    }
+
+    .social-icons {
+        display: flex;
+        align-items: center;
+    }
+
+    @media (min-width: 50rem) {
+        .au-header {
+            grid-template-columns: minmax(10rem, auto) minmax(12rem, 1fr) auto;
+        }
+
+        .utilities {
+            display: flex;
+        }
+    }
+
+    @media (min-width: 76rem) {
+        .au-header {
+            grid-template-columns: auto auto minmax(12rem, 22rem) auto;
+        }
+
+        .product-nav {
+            display: flex;
+        }
+    }
+</style>
+
+
+<script>
+    const menu = document.querySelector<HTMLDetailsElement>('.splash-menu');
+    menu?.addEventListener('keydown', event => { if (event.key === 'Escape') { menu.open = false; menu.querySelector('summary')?.focus(); } });
+    document.addEventListener('click', event => { if (menu?.open && event.target instanceof Node && !menu.contains(event.target)) menu.open = false; });
+</script>

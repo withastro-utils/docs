@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+    <defs>
+        <linearGradient id="canvas" x1="0" y1="0" x2="1" y2="1">
+            <stop stop-color="#071311" />
+            <stop offset="1" stop-color="#10231f" />
+        </linearGradient>
+        <linearGradient id="route" x1="0" y1="0" x2="1" y2="0">
+            <stop stop-color="#4dd8b4" />
+            <stop offset="1" stop-color="#ff9d5c" />
+        </linearGradient>
+        <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+            <path d="M48 0H0V48" fill="none" stroke="#274139" stroke-width="1" opacity=".42" />
+        </pattern>
+    </defs>
+    <rect width="1200" height="630" rx="36" fill="url(#canvas)" />
+    <rect width="1200" height="630" rx="36" fill="url(#grid)" />
+    <g transform="translate(72 68)">
+        <rect width="64" height="64" rx="15" fill="#071311" stroke="#274139" />
+        <path d="M8 39.5c5 11.5 38.5 16 49-2" fill="none" stroke="#4dd8b4" stroke-width="5" stroke-linecap="round" />
+        <circle cx="12" cy="41" r="3.5" fill="#f4f7f2" />
+        <path d="M32 7c7 8.8 10.5 19.6 9 32.2L32 51l-9-11.8C21.5 26.6 25 15.8 32 7Z" fill="#ff9d5c" />
+        <circle cx="32" cy="27" r="5" fill="#071311" />
+        <path d="m25 43-7 7 1-12 4.5-4.5M39 43l7 7-1-12-4.5-4.5" fill="#ff9d5c" stroke="#071311" stroke-width="2" stroke-linejoin="round" />
+    </g>
+    <text x="158" y="112" fill="#f4f7f2" font-family="Manrope, Arial, sans-serif" font-size="38" font-weight="800">Astro Utils</text>
+    <text x="72" y="232" fill="#4dd8b4" font-family="IBM Plex Mono, monospace" font-size="18" font-weight="600" letter-spacing="2">SERVER-FIRST UTILITIES FOR ASTRO</text>
+    <text x="72" y="320" fill="#f4f7f2" font-family="Manrope, Arial, sans-serif" font-size="68" font-weight="800" letter-spacing="-2">Server-first forms.</text>
+    <text x="72" y="394" fill="#f4f7f2" font-family="Manrope, Arial, sans-serif" font-size="68" font-weight="800" letter-spacing="-2">Still just Astro.</text>
+    <text x="72" y="455" fill="#b6c5bf" font-family="Manrope, Arial, sans-serif" font-size="25">Validation, view state, server actions, and chunked uploads.</text>
+    <line x1="86" y1="532" x2="1110" y2="532" stroke="url(#route)" stroke-width="4" stroke-linecap="round" />
+    <g font-family="IBM Plex Mono, monospace" font-size="16" font-weight="600">
+        <circle cx="106" cy="532" r="11" fill="#4dd8b4" stroke="#071311" stroke-width="5" />
+        <text x="86" y="575" fill="#b6c5bf">BIND</text>
+        <circle cx="418" cy="532" r="11" fill="#4dd8b4" stroke="#071311" stroke-width="5" />
+        <text x="373" y="575" fill="#b6c5bf">VALIDATE</text>
+        <circle cx="734" cy="532" r="11" fill="#4dd8b4" stroke="#071311" stroke-width="5" />
+        <text x="715" y="575" fill="#b6c5bf">ACT</text>
+        <circle cx="1060" cy="532" r="11" fill="#ff9d5c" stroke="#071311" stroke-width="5" />
+        <text x="1018" y="575" fill="#b6c5bf">RESTORE</text>
+    </g>
+</svg>
+

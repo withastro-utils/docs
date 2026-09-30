@@ -1,0 +1,24 @@
+---
+title: Log in with feedback
+description: Success, error feedback, and session updates.
+lastUpdated: 2026-09-12
+---
+
+import CodePreview from '../../../components/CodePreview.astro';
+import { loginExample } from '../../../examples/registry';
+
+Complete the [Forms setup](/docs/guides/forms/getting-started/) first, or use the configuration, middleware, and layout files in the sidebar. Install `@astro-utils/forms` and `@astrojs/node` in an existing Astro project.
+
+## Try the interaction
+
+Use **demo@example.com** and **demo-only** for success. Any other credentials show an error. Try an error followed by success to see feedback reset.
+
+<CodePreview example={loginExample} />
+
+## How it works
+
+These public credentials demonstrate the form flow only. Replace the demo condition with your authentication provider before using this in an application. Passwords are excluded from view state; the callback clears the submitted value. Only the demo user ID is saved in the session.
+
+## Continue
+
+Read the [session reference](/docs/reference/forms/session/).

@@ -1,0 +1,139 @@
+<section class="state-flow" aria-labelledby="state-flow-title">
+    <div class="flow-copy">
+        <p class="flow-label">One request, one clear loop</p>
+        <h2 id="state-flow-title">State moves. Astro stays server-first.</h2>
+        <p>Controls bind values, validation protects the action, and the next render restores the result.</p>
+    </div>
+    <ol aria-label="Form request lifecycle">
+        <li><span>01</span><strong>Bind</strong><small>Read typed values</small></li>
+        <li><span>02</span><strong>Validate</strong><small>Check browser and server rules</small></li>
+        <li><span>03</span><strong>Act</strong><small>Run the selected callback</small></li>
+        <li><span>04</span><strong>Restore</strong><small>Render the updated state</small></li>
+    </ol>
+</section>
+
+<style>
+    .state-flow {
+        position: relative;
+        margin-block: 1rem 4.5rem;
+        padding: clamp(1.25rem, 4vw, 2.25rem);
+        display: grid;
+        grid-template-columns: minmax(14rem, 0.75fr) minmax(0, 1.25fr);
+        gap: clamp(1.5rem, 5vw, 4rem);
+        align-items: center;
+        overflow: hidden;
+        border: 1px solid var(--au-border);
+        border-radius: var(--au-radius-hero);
+        background: color-mix(in srgb, var(--au-surface-raised) 94%, transparent);
+        box-shadow: var(--au-shadow-lg);
+    }
+
+    .state-flow::before {
+        content: 'FORM / REQUEST LIFECYCLE';
+        position: absolute;
+        inset: 1rem 1rem auto auto;
+        color: var(--sl-color-gray-3);
+        font: 500 0.6rem var(--sl-font-mono);
+        letter-spacing: 0.08em;
+    }
+
+    .flow-label {
+        margin: 0 0 0.5rem;
+        color: var(--au-accent);
+        font-family: var(--sl-font-mono);
+        font-size: 0.75rem;
+        font-weight: 800;
+        text-transform: uppercase;
+    }
+
+    h2 {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        font-size: clamp(1.5rem, 3vw, 2.25rem);
+        line-height: 1.1;
+    }
+
+    .flow-copy > p:last-child {
+        margin-block-end: 0;
+        color: var(--sl-color-gray-2);
+    }
+
+    ol {
+        position: relative;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 0.75rem;
+        list-style: none;
+    }
+
+    ol::before {
+        content: '';
+        position: absolute;
+        inset: 1.15rem 8% auto;
+        height: 2px;
+        background: linear-gradient(90deg, var(--au-accent), var(--au-action));
+        transform-origin: left;
+    }
+
+    li {
+        position: relative;
+        min-width: 0;
+        display: grid;
+        justify-items: start;
+    }
+
+    li span {
+        width: 2.35rem;
+        height: 2.35rem;
+        display: grid;
+        place-items: center;
+        z-index: 1;
+        border: 4px solid var(--au-surface-raised);
+        border-radius: 50%;
+        color: var(--au-code-bg);
+        background: var(--au-accent);
+        box-shadow: 0 0 0 1px var(--au-border-strong);
+        font: 800 0.7rem var(--sl-font-mono);
+    }
+
+    li strong {
+        margin-top: 0.75rem;
+        color: var(--sl-color-white);
+        font-size: 0.9rem;
+    }
+
+    li small {
+        margin-top: 0.2rem;
+        color: var(--sl-color-gray-2);
+        font-size: 0.72rem;
+        line-height: 1.35;
+    }
+
+    li:last-child span {
+        background: var(--au-action);
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+        ol::before { animation: draw-line 700ms 240ms both ease-out; }
+        li { animation: enter-step 420ms both ease-out; }
+        li:nth-child(2) { animation-delay: 100ms; }
+        li:nth-child(3) { animation-delay: 200ms; }
+        li:nth-child(4) { animation-delay: 300ms; }
+    }
+
+    @keyframes draw-line { from { transform: scaleX(0); } }
+    @keyframes enter-step { from { opacity: 0; transform: translateY(10px); } }
+
+    @media (max-width: 50rem) {
+        .state-flow { grid-template-columns: 1fr; }
+        .state-flow::before { display: none; }
+    }
+
+    @media (max-width: 34rem) {
+        ol { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        ol::before { display: none; }
+    }
+</style>

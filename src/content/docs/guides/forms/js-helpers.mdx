@@ -1,114 +1,55 @@
 ---
-title: JS Helpers
-description: SSR JS for client actions
+title: Server Helpers
+description: Redirect after a form action, refresh a parent form, and update the browser.
+lastUpdated: 2026-09-12
 ---
 
-# Introduction
+Use `Astro.locals.forms` inside a Forms page with the [shared setup](/docs/guides/forms/getting-started/).
 
-Astro forms ship with some utility functions to handle forms.
-Some functionality works by sending the script to the client and running it there.
+## Show feedback before redirecting
 
-You can access them via `Astro.locals.forms`.
-
-### Controllers
-
-```ts
-class FormsReact {
-    scriptToRun: string;
-    overrideResponse: Response | null;
-
-    // server side redirect
-    redirect(location: string, status?: ValidRedirectStatus): void;
-    updateSearchParams(): {
-        search: URLSearchParams;
-        redirect(status?: ValidRedirectStatus): void;
-    };
-    updateOneSearchParam(key: string, value?: string, status?: ValidRedirectStatus): void;
-
-    /**
-     * Reload the page with the current state (BindForm) without client redirect. If that a POST request, buttons will not be invoked again.
-     * @param immediate true by default - If true, will stop rendering all BindForm components and their children and immediately reload the page.
-     */
-    reloadState(immediate: boolean = true): void;
-
-    // client side redirect
-    redirectTimeoutSeconds(location: string, timeoutSec = 2): void;
-
-    alert(message: string): void;
-    consoleLog(...messages: any[]): void;
-    console(type: keyof Console, ...messages: any[]): void;
-    callFunction(func: string, ...args: any[]): void;
-}
-```
-
-### Example
-
-```astro
+```astro title="src/pages/finish.astro"
 ---
-import { Bind, BindForm, BButton, BInput } from "@astro-utils/forms/forms.js";
-import Layout from "../layouts/Layout.astro";
+import { BButton, BindForm } from '@astro-utils/forms/forms.js';
+import Layout from '../layouts/Layout.astro';
 
-type Form = {
-    name: string;
-    age: number;
-}
+let message = '';
 
-const form = Bind<Form>();
-
-let showSubmitText: string;
-function formSubmit(){
-    showSubmitText = `You name is ${form.name}, you are ${form.age} years old. `;
-
-    // Redirect to home page after 2 seconds
-    Astro.locals.forms.redirectTimeoutSeconds('/');
+function finish() {
+    message = 'Done. Returning to the home page in two seconds.';
+    Astro.locals.forms.redirectTimeoutSeconds('/', 2);
 }
 ---
 <Layout>
-    <BindForm bind={form}>
-        {showSubmitText}
-
-        <h4>What you name*</h4>
-        <BInput type="text" name="name" maxlength={20} required/>
-
-        <h4>Enter age*</h4>
-        <BInput type="int" name="age" min={10} required/>
-
-        <BButton onClick={formSubmit} whenFormOK>Submit</BButton>
+    <span slot="title">Finish a task</span>
+    <BindForm>
+        <BButton onClick={finish}>Finish</BButton>
+        <p role="status">{message}</p>
     </BindForm>
 </Layout>
 ```
 
-### Throw Response
-If you want to throw a response from the server.
+`redirectTimeoutSeconds` sends a browser action, so the user sees the rendered feedback before navigating. Use `redirect('/account')` in the callback when you want an immediate HTTP redirect instead.
 
-Meaning you in a nested function and you encore an error and you want to override an response and abort the current page execution.
+## Refresh a parent after a child action
 
-You can use the `ThrowOverrideResponse` class.
+A form rerenders after its own action. Call `reloadState()` only when a nested form changes data shown by its parent. The [editable users example](/docs/guides/forms/loops-and-components/) demonstrates deletion and the parent's count updating together.
 
-```ts
-new ThrowOverrideResponse(response?: Response, message?: string)
-```
+For database-backed parent data, attach a loader to `bind.on.reloadState`. A reload does not run the original button callback again.
 
-#### Example
-```ts
-import { ThrowOverrideResponse } from '@astro-utils/forms/forms.js';
+## Choose a helper
 
-throw new ThrowOverrideResponse(new Response('Unauthorized', { status: 401 }));
-```
+| Helper | Use it for |
+| --- | --- |
+| `redirect(url, status?)` | An immediate server redirect. |
+| `redirectTimeoutSeconds(url, seconds?)` | Render feedback, then navigate in the browser. |
+| `reloadState()` | Rerender a parent affected by a child action. |
+| `updateSearchParams()` | Change several URL query values, then call the returned `redirect()`. |
+| `updateOneSearchParam(key, value?, status?)` | Change or remove one query value and redirect. |
+| `alert(message)` | Show a browser alert. Prefer inline feedback for ordinary validation. |
+| `consoleLog(...values)` / `console(type, ...values)` | Log in the browser. |
+| `callFunction(name, ...args)` | Call an existing browser function. |
 
-Edge case:
-- If no `Response` is provided, will be use the response stored in `locals.forms.overrideResponse`.
-- If no `Response` is stored in `locals.forms.overrideResponse`, will be return the message with error code 500.
+## Stop a nested operation with a response
 
-#### Edge case example
-```ts
-import { ThrowOverrideResponse } from '@astro-utils/forms/forms.js';
-
-Astro.locals.forms.redirect('/login');
-throw new ThrowOverrideResponse();
-```
-
-Or you can just pass an error message:
-```ts
-throw new ThrowOverrideResponse(null, 'Unauthorized');
-```
+Use [ThrowOverrideResponse](/docs/reference/forms/advanced-responses/) when a nested function must stop processing and return a response. Setting a redirect and throwing a response serve different control-flow needs; ordinary form callbacks usually only need the redirect helper.

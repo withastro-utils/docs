@@ -1,0 +1,27 @@
+---
+import { BButton, Bind, BindForm } from '@astro-utils/forms/forms.js';
+import Layout from '../layouts/Layout.astro';
+
+const colors = ['red', 'green', 'blue', 'yellow', 'purple', 'orange', 'pink', 'black', 'white', 'gray'];
+
+function changeColor() {
+    this.state.color++;
+
+    if (this.state.color >= colors.length) {
+        this.state.color = this.extra;
+    }
+    this.style = `color: ${colors[this.state.color]}`;
+}
+---
+
+<Layout>
+    <BindForm>
+        {
+            colors.map((_, i) => (
+                <BButton onClick={changeColor} extra={i} state={{ color: i }}>
+                    Button {i}
+                </BButton>
+            ))
+        }
+    </BindForm>
+</Layout>

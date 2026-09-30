@@ -1,0 +1,24 @@
+---
+title: Submit a service request
+description: Grouped fields, draft saving, and final validation.
+lastUpdated: 2026-09-12
+---
+
+import CodePreview from '../../../components/CodePreview.astro';
+import { governmentFormExample } from '../../../examples/registry';
+
+Complete the [Forms setup](/docs/guides/forms/getting-started/) first, or use the configuration, middleware, and layout files in the sidebar. Install `@astro-utils/forms` and `@astrojs/node` in an existing Astro project.
+
+## Try the interaction
+
+Save an incomplete draft, then finish the required fields and submit. The preview confirms each action; it does not persist a draft after reload.
+
+<CodePreview example={governmentFormExample} />
+
+## How it works
+
+In your project, **Save draft** writes a small object to the current session. Reloading the page restores it; submission clears it. This identifies the draft by browser session, not by an authenticated account. For a real service, authenticate the applicant and store drafts durably under their user ID. The demo creates no official request.
+
+## Continue
+
+Review [binding and validation](/docs/guides/forms/data-binding/).

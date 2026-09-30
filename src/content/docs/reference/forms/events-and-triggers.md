@@ -1,52 +1,54 @@
 ---
-title: Client Side Events & Triggers
-description: Forms client side events & submit triggers
+title: Client-side events & triggers
+description: Observe submission and choose which bound button handles a browser event.
+lastUpdated: 2026-09-12
 ---
 
-## Client Side Events
-
-You can listen to submit events to handle the loading while the form is being submitted.
+## Show submission feedback
 
 ```ts
-type SubmitInfo = {
-    button: HTMLButtonElement, 
-    uploads: {count: number, totalSize: number} // only for big files
-};
 
-document.addEventListener('WFSubmitting', ({detail}: {details: SubmitInfo}) => {
-    const {button, uploads} = details;
+document.addEventListener('WFSubmitting', (event) => {
+    const { button } = (event as CustomEvent<{ button: HTMLButtonElement }>).detail;
 
-    button.classList.add('loading');
-    console.log('Form is being submitted');
+    console.log(button.name, 'submitted!')
 });
+
 ```
 
-## Submit Triggers
+`WFSubmitting` reports the start of a form submission, but it does not guarantee completion. For stalled or failed uploads, provide explicit error or retry feedback; do not invent a completion event.
 
-If you want custom event to submit the form, you can use the `submitForm` global function.
+## Submit from a select
 
-```astro
+To submit a form from another browser event, use the global `submitForm` function.
+
+```astro title="src/pages/events-and-triggers.astro"
 ---
-import { Bind, BButton, BindForm } from '@astro-utils/forms/forms.js';
+import { Bind, BButton, BindForm, BSelect, BOption } from '@astro-utils/forms/forms.js';
 
-const form = Bind();
+type SelectForm = {
+    select: string;
+};
+
+const bind = Bind<SelectForm>();
 
 function onSubmit(){
-    console.log(form.select);
+    console.log(bind.select);
 }
 ---
-<BindForm bind={form}>
-    <BSelect name="select" required onchange="submitForm(this)">
+<BindForm {bind}>
+    <label for="select">Selection</label>
+    <BSelect id="select" name="select" required onchange="submitForm(this)">
         <BOption value="1">Option 1</BOption>
         <BOption value="2">Option 2</BOption>
     </BSelect>
 
-    <BButton onClick={onSubmit} class="hidden">This button is hidden</BButton>
+    <BButton onClick={onSubmit} hidden>This button is hidden</BButton>
 </BindForm>
 ```
 
 
-### Select button 
+### Choose the action
 It will try to select the best BButton in this BindForm.
 
 The order of selection is:
@@ -55,32 +57,37 @@ The order of selection is:
 
 You can also manually configure that by adding the `onSubmitClick` attribute to the select.
 
-```astro
+```astro title="src/pages/events-and-triggers.astro"
 <BSelect name="select" required onchange="submitForm(this)" onSubmitClick="consoleItButton">
     <BOption value="1">Option 1</BOption>
     <BOption value="2">Option 2</BOption>
 </BSelect>
 
-<BButton id="consoleItButton" onClick={onSubmit} class="hidden">This button is hidden</BButton>
+<BButton id="consoleItButton" onClick={onSubmit} hidden>This button is hidden</BButton>
 ```
 
 
-### Search Input Example
+### Submit a search on Enter
 
 Here's another example using a search input that triggers form submission:
 
-```astro
+```astro title="src/pages/events-and-triggers.astro"
 ---
 import { Bind, BButton, BindForm, BInput } from '@astro-utils/forms/forms.js';
 
-const form = Bind();
+type SearchForm = {
+    searchQuery: string;
+};
+
+const bind = Bind<SearchForm>();
 
 function onSearch(){
-    console.log('Searching for:', form.searchQuery);
+    console.log('Searching for:', bind.searchQuery);
 }
 ---
-<BindForm bind={form}>
-    <BInput name="searchQuery" placeholder="Enter search term..." onSubmitClick="searchButton" />
+<BindForm {bind}>
+    <label for="searchQuery">Search</label>
+    <BInput id="searchQuery" name="searchQuery" placeholder="Enter search term..." onSubmitClick="searchButton" />
     <BButton id="searchButton" onClick={onSearch}>Search</BButton>
 
     <BButton onClick={() => {}} whenFormOK>No Search</BButton>
@@ -89,14 +96,33 @@ function onSearch(){
 
 This example shows how to:
 - Use a search input that submits on Enter key press
-- If we hav'nt used the 'onSubmitClick', it will default to the last button with 'whenFormOK' attribute
+- Without `onSubmitClick`, submission defaults to the last button with `whenFormOK`.
 
 
-### Reloading state without click on submit button
+### Update state without an action
 
 When you only want to update the form state - reload the form without the need to click on a submit button.
 
 ```astro
-<BInput type="checkbox" name="showContent" onchange="submitForm(this)" onSubmitClick="state"/>
-{form.showContent ? 'Content is shown' : 'Content is hidden'}
+<label>
+    <BInput type="checkbox" name="showContent" onchange="submitForm(this)" onSubmitClick="state"/> Show content
+</label>
+
+{bind.showContent ? 'Content is shown' : 'Content is hidden'}
 ```
+
+
+### WebForms Options
+
+```astro
+<WebForms loadingClassName="button-loading" preservePageScroll>
+    <BindForm>
+        ...
+        <BButton onClick={...}>Submit</BButton> <!-- class name will be added on submission -->
+    </BindForm>
+</WebForms>
+```
+
+`preservePageScroll` - default true, will ensure the page will be scrolled to the exact same potions after form submission.
+
+`loadingClassName` - the class name that will be added to the button being submitted to indicate a loading state.
