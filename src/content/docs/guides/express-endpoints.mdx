@@ -64,7 +64,7 @@ See [request examples](/docs/reference/express/request/) and [response examples]
 
 ## Add schema validation
 
-For schema-based validation, install the Zod major version supported by the package's `zod-express-middleware` integration:
+For schema-based validation, install the Zod major version supported by the package's [express-zod-safe](https://www.npmjs.com/package/express-zod-safe) integration:
 
 <InstallTabs packages="zod@4" />
 
@@ -84,5 +84,9 @@ export const POST = router.route((req, res) => {
     res.json({ message: `Hello, ${req.body.name}!` });
 });
 ```
+
+By default, it's relax validation that ignore extra properties, defaults to:
+- defaultSchemaObject: lax
+- missingSchemaBehavior: any
 
 Validation applies to the next route created by this router. Review [middleware and error handling](/docs/reference/express/router-and-errors/) before composing several handlers.
